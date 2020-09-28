@@ -22,9 +22,9 @@ nova boot --flavor 3 --image 5c4ceaf0-2d65-46a0-b62d-4be163804809 --key-name clo
      IP=`openstack server list | grep $VMNAME | awk '{ print $8 }'`
      SYSTEM=`openstack server list | grep $VMNAME | awk '{ print $10 $11 }'`
      
-     echo 'VM status is - $STATUS'
+     echo "VM status is - $STATUS"
      if [ "x$STATUS" = "xACTIVE" ]; then
-       echo "VM $VMNAME is $STATUS, ip address $IP, system $SYSTEM"
+       echo "VM $VMNAME is $STATUS, IP address $IP, system $SYSTEM"
        exit
      fi
    done
