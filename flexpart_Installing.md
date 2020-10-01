@@ -8,7 +8,7 @@ it can be used in forward or backward mode, with defined sources or in a domain-
 
 FLEXPART is developed using gfortran.
 
-```bash 
+```bash
 sudo apt-get update
 sudo apt-get install g++ gfortran
 
@@ -34,7 +34,7 @@ unzip %JASPER%.zip
 cd %JASPER%
 ./configure --prefix=~/lib/jasper
 
-# указывает где будет установлена библиотека, нам она нужна будет для линковки
+# prefix indicates where the library will be installed after the command make install
 
 make
 make check
@@ -57,6 +57,7 @@ make
 make check
 sudo make install
 ```
+
 После установки появится новая папка lib/grib-api
 
 At the end of the command execution you will see:
@@ -87,12 +88,49 @@ Add the following lines to the .bashrc-file of your home directory:
  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JASPER/lib
 ```
 
-Testing whether Grib-API installation has been successful: read out Grib-file:
+Testing whether Grib-API installation has been successful, and path is correct: read out Grib-file:
 `grib_ls %FILENAME% with extension grib
 
 [Link to grib examples](http://download.ecmwf.org/test-data/grib_api/grib_api_test_data.tar.gz)
 
 ### emos (optional, for future versions)
+
+```bahs
+curl https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.7.3-Source.tar.gz --output eccodes-2.7.3-Source.tar.gz
+tar -xvf eccodes-2.7.3-Source.tar.gz
+```
+
+### ecCodes
+
+```bash
+> 
+> tar -xzf  eccodes-x.y.z-Source.tar.gz
+> mkdir build ; cd build
+
+> cmake -DCMAKE_INSTALL_PREFIX=/path/to/where/you/install/eccodes ../eccodes-x.y.z-Source
+...
+
+> make
+> ctest
+> make install
+```
+
+### gcc
+
+GСС - это свободно доступный оптимизирующий компилятор для языков C, C++.
+
+```bash
+wget https://ftp.gnu.org/gnu/gcc/gcc-4.9.3/gcc-4.9.3.tar.gz
+tar xzf gcc-4.6.2.tar.gz
+cd gcc-4.6.2
+./contrib/download_prerequisites
+cd ..
+mkdir objdir
+cd objdir
+$PWD/../gcc-4.6.2/configure --prefix=$HOME/GCC-4.6.2 --enable-languages=c,c++,fortran,go
+make -j 4 # building in parallel ( 4 cores processors)
+make install
+```
 
 ### flexpart
 
@@ -109,3 +147,10 @@ INCPATH=/lib/%GRIB%/include
 LIBPATH1=/lib/%GRIB%/lib
 LIBPATH2=/lib/%JASPER%/lib
 ```
+
+Install gcc-4.9.1 under ~/lib
+Set environment variable LD_LIBRARY_PATH to point to compiler libraries
+
+Компиляция скрипта:
+Compile serial FLEXPART
+  make [-j] serial
