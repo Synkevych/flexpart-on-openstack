@@ -44,7 +44,6 @@ mkdir ~/lib
 IF JPG compression is needed to decode the input meteorological winds
 
 ```bash
-mkdir ~/lib/
 mkdir ~/lib/src/
 cd ~/src/
 curl https://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip --output jasper-1.900.1.zip
@@ -55,6 +54,10 @@ cd ~/lib/jasper-1.900.1
 # prefix indicates where the library will be installed after you type - make install
 
 make
+
+# if your configuration was wrong and you need to change it before rerun make, run
+make clean
+# if the installation configuration was successful then:
 make check
 sudo make install
 ```
@@ -121,7 +124,6 @@ GRIB, BUFR, GTS.
 ```bash
 > tar -xzf  eccodes-x.y.z-Source.tar.gz
 > mkdir build ; cd build
-
 > cmake -DCMAKE_INSTALL_PREFIX=/path/to/where/you/install/eccodes ../eccodes-x.y.z-Source
 ...
 
@@ -148,43 +150,12 @@ make -j 4 # building in parallel ( 4 cores processors)
 make install
 ```
 
-### netCDF (хранилище данных) v4.6.1
-
-NetCDF (network Common Data Form) – это двоичный формат файлов, предназначенный для создания, доступа и публикации научных данных. Он широко используется специалистами метеорологами и океанографами для хранения переменных, как, например, данных о температуре, давлении, скорости ветра и высоте волн.
-
-Данные в файле netCDF хранятся в форме массивов. Например, температура, меняющаяся со временем, хранится в виде одномерного массива. Температура на площади за указанное время хранится в виде двухмерного массива.
-
-Трехмерные данные, например, температура на площади, изменяющаяся со временем, или четырехмерные данные, как то: температура на площади, меняющаяся во времени и с изменением высоты, хранятся в последовательностях двухмерных массивов.
-
-```bash
-wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.6.1.tar.gz
-tar -zxvf netcdf-4.6.1.tar.gz
-cd netcdf-4.6.1/
-wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O config.guess
-wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' -O config.sub
-./configure --prefix=/disk2/hyf/netcdf-4.6.1 CPPFLAGS="-I/disk2/hyf/lib/hdf5/include -I/diks2/hyf/lib/grib2/include -O3" LDFLAGS="-L/disk2/hyf/lib/hdf5/lib -L/diks2/hyf/lib/grib2/lib" --enable-shared --enable-netcdf-4  --disable-dap --disable-doxygen
-make -j
-make check
-make install
-
-vi~/.bashrc
-export PATH="$DIR/netcdf-4.6.1/bin:$PATH"
-export NETCDF=$DIR/netcdf-4.6.1
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NETCDF/lib
-export CFLAGS="-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include"
-export CXXFLAGS="-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include"
-export FCFLAGS="-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include"
-export CPPFLAGS="-I${HDF5}/include -I${NETCDF}/include"
-export LDFLAGS="-L${HDF5}/lib -L${NETCDF}/lib"
-source ~/.bashrc
-```
-
 ### flexpart v82
 
 ```bash
-wget http
- ... 
-tar -xvf grib_api-1.26.1-Source.tar.gz -C ../lib/
+cd ~/lib/src
+curl https://www.flexpart.eu/downloads/5 --output flexpart82.tar.gz
+tar -xvf flexpart82.tar.gz -C ../lib/
 cd ~/lib/flexpart_82/
 cp makefile.gfs_gfortran_64 makefile
 
@@ -197,6 +168,10 @@ LIBPATH2 = ${ROOT_DIR}/jasper/lib
 
 make
 ```
+
+To test if the flexpart copiled successful, inside flexpart folder type command *./FLEXPART_GFS_GFORTRAN*
+
+File *includepar* contains all relevant FLEXPART parameter settings, both phisical constants and maximum field dimensions.
 
 ### flexpart v10.4
 
@@ -211,9 +186,29 @@ vim makefile # (e.g. vi or emacs)
 Edit the library path variable in the makefile according to the position of libeccodes (or libgrib_api) and libjasper. Change lines to:
 
 ```bash
-INCPATH=/lib/%GRIB%/include
-LIBPATH1=/lib/%GRIB%/lib
-LIBPATH2=/lib/%JASPER%/lib
+# from line 65
+ROOT_DIR = /home_path_to_your/lib
+
+F90    = /usr/bin/gfortran
+MPIF90 = /usr/bin/mpifort
+
+INCPATH1 = ${ROOT_DIR}/jasper/include
+INCPATH2 = ${ROOT_DIR}/grib_api/include
+INCPATH3 = ${ROOT_DIR}/netcdf/include
+
+LIBPATH1 = ${ROOT_DIR}/jasper/lib
+LIBPATH2 = ${ROOT_DIR}/grib_api/lib
+LIBPATH3 = ${ROOT_DIR}/netcdf/lib
+
+# line 102
+
+FFLAGS   = -I$(INCPATH1) -I$(INCPATH2) -I$(INCPATH3) -O$(O_LEV) -g -cpp -m64 -mcmodel=medium -fconvert=little-endian -frecord-marker=4 -fmessage-length=0 -flto=jobserver -O$(O_LEV) $(NCOPT) $(FUSER)
+
+DBGFLAGS = -I$(INCPATH1) -I$(INCPATH2) -I$(INCPATH3) -O$(O_LEV_DBG) -g3 -ggdb3 -cpp -m64 -mcmodel=medium -fconvert=little-endian -frecord-marker=4 -fmessage-length=0 -flto=jobserver -O$(O_LEV_DBG) $(NCOPT) -fbacktrace   -Wall  -fdump-core $(FUSER)
+
+LDFLAGS  = $(FFLAGS) -L$(LIBPATH1) -Wl,-rpath,$(LIBPATH1) $(LIBS) -L$(LIBPATH2) -L$(LIBPATH3)
+LDDEBUG  = $(DBGFLAGS) -L$(LIBPATH1) $(LIBS) -L$(LIBPATH2) -L$(LIBPATH3)
+
 ```
 
 Компиляция скрипта:
