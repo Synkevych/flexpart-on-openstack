@@ -91,7 +91,7 @@ openstack server delete myNewServer
 
 - Show hypervisor hostname, it's state and status
 
-```bash
+```bashсистеми
 nova hypervisor-list
 # useful if you can't connect to your instance
 ```
