@@ -47,8 +47,22 @@ wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub
 ./configure --prefix=/disk2/hyf/netcdf-4.6.1 CPPFLAGS="-I/disk2/hyf/lib/hdf5/include -I/diks2/hyf/lib/grib2/include -O3" LDFLAGS="-L/disk2/hyf/lib/hdf5/lib -L/diks2/hyf/lib/grib2/lib" --enable-shared --enable-netcdf-4  --disable-dap --disable-doxygen
 
 # on the ik@meteodell
-./configure --prefix=/home/ik/Roman/lib/netcdf CPPFLAGS="-I/home/ik/Roman/lib/hdf5/include -I/home/ik/Roman/lib/grib_api/include -O3" LDFLAGS="-L/home/ik/Roman/lib/hdf5/lib -L/home/ik/Roman/lib/grib_api/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
+
+./configure --prefix=/home/ik/Roman/lib/netcdf CPPFLAGS="-I/home/ik/Roman/lib/hdf5/include -I/home/ik/Roman/lib/zlib/include -O3" LDFLAGS="-L/home/ik/Roman/lib/hdf5/lib -L/home/ik/Roman/lib/zlib/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
+
 ```
+
+ Some influential environment variables:
+   CC          C compiler command
+   CFLAGS      C compiler flags
+   LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+               nonstandard directory <lib dir>
+   LIBS        libraries to pass to the linker, e.g. -l<library>
+   CPPFLAGS    (Objective) C/C++ preprocessor flags, e.g. -I<include dir> if
+               you have headers in a nonstandard directory <include dir>
+   LT_SYS_LIBRARY_PATH
+               User-defined run-time library search path.
+   CPP         C preprocessor
 
 You should see the output like this:
 
@@ -63,8 +77,26 @@ NetCDF-4 API:		yes
 Then try to compile:
 
 ```bash
+make
+
+# you should see
++-------------------------------------------------------------+
+| Congratulations! You have successfully installed netCDF!    |
+|                                                             |
+| You can use script "nc-config" to find out the relevant     |
+| compiler options to build your application. Enter           |
+|                                                             |
+|     nc-config --help                                        |
+|                                                             |
++-------------------------------------------------------------+
+
+# then run all tests
+
+make check
+
 make -j
 make check
+
 make install
 
 # FAIL: nc_test
@@ -85,7 +117,6 @@ make install
 *** testing nc_rename_att ... 
         FAILURE at line 1859 of test_write.c: get_att_text: unexpected value
         ### 1 FAILURES TESTING nc_rename_att! ###
-
 
 vi~/.bashrc
 export PATH="$DIR/netcdf-4.6.1/bin:$PATH"
