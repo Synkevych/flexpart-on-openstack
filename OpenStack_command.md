@@ -13,8 +13,18 @@ OpenStack is a set of software components that provide common services for cloud
 ```bash
 nova list 2>/dev/null
 #  2>/dev/null command that cancels standard output and show only info about running VM
-# or 
+# or
 openstack server list
+```
+
+- create new key pair for connect to instate(it is recommended to have a unique key pair for each instance)
+
+```bash
+openstack keypair create $KEY_NAME
+
+# and save private key to the file named $KEY_NAME.key in the .ssh/ folder
+openstack keypair create $KEY_NAME >> .ssh/"${KEY_NAME}.key"
+chmod 600 .ssh/"${KEY_NAME}.key"
 ```
 
 - Starting a new virtual machine
