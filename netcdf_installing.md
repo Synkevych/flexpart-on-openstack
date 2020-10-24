@@ -47,9 +47,9 @@ wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub
 ./configure --prefix=/disk2/hyf/netcdf-4.6.1 CPPFLAGS="-I/disk2/hyf/lib/hdf5/include -I/diks2/hyf/lib/grib2/include -O3" LDFLAGS="-L/disk2/hyf/lib/hdf5/lib -L/diks2/hyf/lib/grib2/lib" --enable-shared --enable-netcdf-4  --disable-dap --disable-doxygen
 
 # on the ik@meteodell
+
 ./configure --prefix=/home/ik/Roman/lib/netcdf CPPFLAGS="-I/home/ik/Roman/lib/hdf5/include -I/home/ik/Roman/lib/zlib/include -O3" LDFLAGS="-L/home/ik/Roman/lib/hdf5/lib -L/home/ik/Roman/lib/zlib/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
 
-./configure --prefix=/home/ik/Roman/lib/netcdf4 CPPFLAGS="-I/home/ik/Roman/lib/hdf5/include -O3" LDFLAGS="-L/home/ik/Roman/lib/hdf5/lib" --enable-shared --enable-netcdf-4
 ```
 
  Some influential environment variables:
@@ -88,33 +88,14 @@ make
 |                                                             |
 |     nc-config --help                                        |
 |                                                             |
-| for additional information.                                 |
-|                                                             |
-| CAUTION:                                                    |
-|                                                             |
-| If you have not already run "make check", then we strongly  |
-| recommend you do so. It does not take very long.            |
-|                                                             |
-| Before using netCDF to store important data, test your      |
-| build with "make check".                                    |
-|                                                             |
-| NetCDF is tested nightly on many platforms at Unidata       |
-| but your platform is probably different in some ways.       |
-|                                                             |
-| If any tests fail, please see the netCDF web site:          |
-| http://www.unidata.ucar.edu/software/netcdf/                |
-|                                                             |
-| NetCDF is developed and maintained at the Unidata Program   |
-| Center. Unidata provides a broad array of data and software |
-| tools for use in geoscience education and research.         |
-| http://www.unidata.ucar.edu                                 |
 +-------------------------------------------------------------+
 
 # then run all tests
 
 make check
 
-
+make -j
+make check
 
 make install
 
@@ -136,7 +117,6 @@ make install
 *** testing nc_rename_att ... 
         FAILURE at line 1859 of test_write.c: get_att_text: unexpected value
         ### 1 FAILURES TESTING nc_rename_att! ###
-
 
 vi~/.bashrc
 export PATH="$DIR/netcdf-4.6.1/bin:$PATH"
