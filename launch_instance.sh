@@ -7,7 +7,7 @@ FILE_PATH=.ssh/"${KEY_NAME}.key"
 openstack keypair create $KEY_NAME >> $FILE_PATH
 chmod 600 .ssh/"${KEY_NAME}.key"
 
-# create an instane
+# create an instanсe
 
 VMNAME="${USER}"_vm_`date --utc +%Y%m%d%H%M%S`
 TIMER=60
@@ -31,10 +31,13 @@ while true; do
     
      printf "\nVM $VMNAME has the status - $STATUS\n"
      if [ "x$STATUS" = "xACTIVE" ]; then
-       printf "VM $VMNAME is $STATUS, IP address $IP, system $SYSTEM\n"
+       "VM $VMNAME is $STATUS, IP address $IP, system $SYSTEM" >> vm_launching.log
        printf "To connect use: ssh -i $FILE_PATH ubuntu@$IP\n"
+      # if the VM is created without errors exit from script
        exit
      fi
    done
+   # if the VM is created with errors remove them
    openstack server delete `openstack server list | grep $VMNAME | awk '{ print $2 }'`
+   "VM $VMNAME is $STATUS, IP address $IP, system $SYSTEM" >> vm_launching.log
 done

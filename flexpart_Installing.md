@@ -145,7 +145,7 @@ cd gcc-7.3.0
 cd ..
 mkdir objdir
 cd objdir
-../gcc-6.1.0/configure --prefix=$DIR/gcc-6.1.0 --enable-languages=c,c++,fortran,go 
+../gcc-6.1.0/configure --prefix=$DIR/gcc-6.1.0 --enable-languages=c,c++,fortran
 make -j 4 # building in parallel ( 4 cores processors)
 make install
 ```
