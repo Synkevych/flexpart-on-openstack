@@ -23,7 +23,7 @@ make install
 ### hdf5
 
 High-performance data management and storage suite  
-Utilize the HDF5 high performance data software library and file format to manage, process, and store your heterogeneous data. HDF5 is built for fast I/O processing and storage.
+Utilize the HDF5 high performance data software library and file format to manage, process, and store your heterogeneous data. HDF5 is buls ilt for fast I/O processing and storage.
 
 ```bash
 tar -xzvf hdf5-1.8.17.tar.gz
@@ -46,7 +46,7 @@ wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub
 
 ./configure --prefix=/disk2/hyf/netcdf-4.6.1 CPPFLAGS="-I/disk2/hyf/lib/hdf5/include -I/diks2/hyf/lib/grib2/include -O3" LDFLAGS="-L/disk2/hyf/lib/hdf5/lib -L/diks2/hyf/lib/grib2/lib" --enable-shared --enable-netcdf-4  --disable-dap --disable-doxygen
 
-# on the ik@meteodell
+# sometimes -O3 flag doesn't work, if you have the same error use -O
 
 ./configure --prefix=/home/ik/Roman/lib/netcdf CPPFLAGS="-I/home/ik/Roman/lib/hdf5/include -I/home/ik/Roman/lib/zlib/include -O3" LDFLAGS="-L/home/ik/Roman/lib/hdf5/lib -L/home/ik/Roman/lib/zlib/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
 
@@ -67,7 +67,7 @@ wget 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub
 You should see the output like this:
 
 ```text
-/# Features
+# Features
 --------
 NetCDF-2 API:		yes
 HDF4 Support:		no
@@ -91,14 +91,10 @@ make
 +-------------------------------------------------------------+
 
 # then run all tests
-
-make check
-
 make -j
-make check
+make -j check
 
 make install
-
 # FAIL: nc_test
 
 *** testing nc_get_att_text ... 
@@ -128,4 +124,15 @@ export FCFLAGS="-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include"
 export CPPFLAGS="-I${HDF5}/include -I${NETCDF}/include"
 export LDFLAGS="-L${HDF5}/lib -L${NETCDF}/lib"
 source ~/.bashrc
+```
+
+### netcdf-fortran-4.4.4
+
+```bash
+tar -xzvf netcdf-fortran-4.4.4.tar.gz
+cd netcdf-fortran-4.4.4/
+./configure [--prefix=<installation path>]
+make
+make check
+make install
 ```

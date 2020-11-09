@@ -23,12 +23,20 @@ FLEXPART is developed using gfortran.
 sudo apt-get update
 sudo apt-get install g++ gfortran
 
-# Some other libraries and tools
+# Some other libraries and tools that can be installed automatically
 
-sudo apt-get install autoconf libtool automake flex bison
-sudo apt-get install cmake
-sudo apt-get install python-dev python-pip git-core vim
+sudo apt-get install autoconf libtool automake flex bison cmake python-dev python-pip
 ```
+
+The other libraries:
+
+- jasper-1.900.1
+- grib_api
+- zlib
+- hdf5
+- netcdf
+- netcdf-c
+- netcdf-fortran
 
 ## Installation steps
 
@@ -41,12 +49,12 @@ mkdir ~/lib
 
 ### jasper
 
-IF JPG compression is needed to decode the input meteorological winds
+If JPG compression is needed to decode the input meteorological winds.
 
 ```bash
 mkdir ~/lib/src/
 cd ~/src/
-curl https://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip --output jasper-1.900.1.zip
+wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip
 unzip jasper-1.900.1.zip -d ../lib/
 cd ~/lib/jasper-1.900.1
 ./configure --prefix=~/lib/jasper
@@ -71,7 +79,7 @@ After installation a new folder lib/jasper appears, and it's save to remove fold
  wget https://people.freebsd.org/~sunpoet/sunpoet/grib_api-1.26.1-Source.tar.gz
  tar -xvf grib_api-1.26.1-Source.tar.gz -C ../lib/
  cd ~/lib/grib_api-1.26.1-Source/
-./configure --prefix=~/lib/grib_api --with-jasper=~/lib/jasper --disable-shared
+./configure --prefix=~/lib/grib_api --with-jasper=~/lib/jasper 
 
 make
 make check
@@ -125,7 +133,6 @@ GRIB, BUFR, GTS.
 > tar -xzf  eccodes-x.y.z-Source.tar.gz
 > mkdir build ; cd build
 > cmake -DCMAKE_INSTALL_PREFIX=/path/to/where/you/install/eccodes ../eccodes-x.y.z-Source
-...
 
 > make
 > ctest
@@ -134,7 +141,7 @@ GRIB, BUFR, GTS.
 
 ### gcc v7.3.0
 
-GСС - это абор компиляторов для различных языков программирования, разработанный в рамках проекта GNU. GCC часто выбирается для разработки программного обеспечения, которое должно работать на большом числе различных аппаратных платформ.
+GСС - это набор компиляторов для различных языков программирования, разработанный в рамках проекта GNU. GCC часто выбирается для разработки программного обеспечения, которое должно работать на большом числе различных аппаратных платформ.
 
 ```bash
 # https://ftp.gnu.org/gnu/gcc/
@@ -176,6 +183,7 @@ File *includepar* contains all relevant FLEXPART parameter settings, both phisic
 ### flexpart v10.4
 
 ```bash
+wget https://www.flexpart.eu/downloads/66
 tar -xvf flexpart10.4.tar.gz
 cd flexpart_v10.4
 cp -r src/ test1/
@@ -208,7 +216,6 @@ DBGFLAGS = -I$(INCPATH1) -I$(INCPATH2) -I$(INCPATH3) -O$(O_LEV_DBG) -g3 -ggdb3 -
 
 LDFLAGS  = $(FFLAGS) -L$(LIBPATH1) -Wl,-rpath,$(LIBPATH1) $(LIBS) -L$(LIBPATH2) -L$(LIBPATH3)
 LDDEBUG  = $(DBGFLAGS) -L$(LIBPATH1) $(LIBS) -L$(LIBPATH2) -L$(LIBPATH3)
-
 ```
 
 Компиляция скрипта:
