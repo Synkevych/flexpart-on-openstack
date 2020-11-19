@@ -108,21 +108,33 @@ rm -rf netcdf-fortran-4.4.5
 
 # flexpart
 
-wget https://www.flexpart.eu/downloads/66
-tar -xvf 66
+wget --content-disposition https://www.flexpart.eu/downloads/66
+tar -xvf flexpart_v10.4.tar
 cd flexpart_v10.4_3d7eebf/src
+
+# change parameter in flexpart
 
 sed -i 's#/homevip/flexpart#/home/ubuntu/flexpart#g' makefile
 sed -i 's#/gcc-5.4.0/include#/include#g' makefile
 sed -i 's#/gcc-5.4.0/lib#/lib#g' makefile
+sed -i 's#/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/lib#g' par_mod.f90
+# or integer,parameter :: nxmax=721,nymax=361,nuvzmax=64,nwzmax=64,nzmax=64
 
-export DIR=/home/ubuntu/flexpart
-export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:$NETCDF/lib'
+export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:$DIR/lib'
 export CFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
 export CXXFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
 export FCFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
 export CPPFLAGS='-I${HDF5}/include -I${NETCDF}/include'
 export LDFLAGS='-L${HDF5}/lib -L${NETCDF}/lib'
+
+export PATH=$GRIB_API_BIN:$PATH
+export GRIB_API=$DIR/grib_api/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GRIB_API/lib
+export GRIB_API_BIN=$GRIB_API/bin
+export GRIB_API_LIB=$GRIB_API/lib
+export GRIB_API_INCLUDE=$GRIB_API/include
+
+
 source ~/.bashrc
 
 make -j serial
