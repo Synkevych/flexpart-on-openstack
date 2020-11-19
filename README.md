@@ -1,6 +1,6 @@
 # openstack
 
-This is a project to create many (a dozen or more) virtual machines(instance) in cloud web services based on OpenStack, to calculate a model for predicting the spread of air pollution.
+This is a project to create many (a dozen or more) virtual machines(instance) in cloud web services based on OpenStack, to calculate a flexpart model for predicting the spread of air pollution.
 
 The main commands for working with OpenStack are described in the file: [OpenStack_command](OpenStack_command.md)
 
