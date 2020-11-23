@@ -134,10 +134,10 @@ export GRIB_API_BIN=$GRIB_API/bin
 export GRIB_API_LIB=$GRIB_API/lib
 export GRIB_API_INCLUDE=$GRIB_API/include
 
-
 source ~/.bashrc
 
-make -j serial
+# ncf=yes - to activate NetCDF support
+make -j serial ncf=yes
 
 cd $DIR
 echo "flexpart istalled" >> installation.log
