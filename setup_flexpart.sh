@@ -28,7 +28,7 @@ chmod +x configure
 make clean ; make -j ; make -j check
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "jasper istalled" >> installation.log
 rm -rf jasper-1.900.1
 
@@ -42,7 +42,7 @@ chmod +x configure
 make clean ; make -j ; make -j check
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "grib_api istalled" >> installation.log
 rm -rf grib_api-1.26.1-Source
 
@@ -56,7 +56,7 @@ chmod +x configure
 make clean ; make -j ; make -j check
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "zlib istalled" >> installation.log
 rm -rf zlib-1.2.11
 
@@ -70,7 +70,7 @@ chmod +x configure
 make clean ; make -j ; make check
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "hdf5 istalled" >> installation.log
 rm -rf hdf5-1.8.17
 
@@ -86,7 +86,7 @@ LDFLAGS="-L$DIR/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-d
 make clean ; make -j ; make -j check
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "netcdf istalled" >> installation.log
 rm -rf netcdf-4.6.1
 
@@ -102,7 +102,7 @@ LDFLAGS="-L$DIR/lib" --enable-shared --disable-doxygen
 make clean ; make -j ; make check ; make check # on first launch, one test fails
 make install
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "netcdf-fortran istalled" >> installation.log
 rm -rf netcdf-fortran-4.4.5
 
@@ -139,5 +139,5 @@ source ~/.bashrc
 
 make -j serial
 
-cd /home/ubuntu/flexpart
+cd $DIR
 echo "flexpart istalled" >> installation.log
