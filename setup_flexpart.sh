@@ -138,6 +138,7 @@ source ~/.bashrc
 
 # ncf=yes - to activate NetCDF support
 make -j serial ncf=yes
+# to use NCF change IOUT parameter to IOUT=9 inside file options/COMMOND
 
 cd $DIR
 echo "flexpart istalled" >> installation.log
