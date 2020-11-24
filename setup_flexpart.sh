@@ -13,7 +13,6 @@ export FC=gfortran
 
 # jasper
 
-cd /home/ubuntu
 mkdir flexpart ; cd flexpart
 echo "starting istallation flexpart" >> installation.log
 
@@ -117,7 +116,7 @@ cd flexpart_v10.4_3d7eebf/src
 sed -i 's#/homevip/flexpart#/home/ubuntu/flexpart#g' makefile
 sed -i 's#/gcc-5.4.0/include#/include#g' makefile
 sed -i 's#/gcc-5.4.0/lib#/lib#g' makefile
-sed -i 's#/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/lib#g' par_mod.f90
+sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/g' par_mod.f90
 # or integer,parameter :: nxmax=721,nymax=361,nuvzmax=64,nwzmax=64,nzmax=64
 
 export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:$DIR/lib'
