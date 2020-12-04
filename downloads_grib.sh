@@ -5,16 +5,20 @@ if [ $# -ne 2 ]; then echo "Usage: $0 From, To YYYYMMDD YYYYMMDD"; exit 1; fi
 FROM_YY=$(date -d "$1" '+%Y'); FROM_MM=$(date -d "$1" '+%m'); FROM_DD=$(date -d "$1" '+%d')
 TO_YEAR=$(date -d "$2" '+%Y'); TO_MONTH=$(date -d "$2" '+%m'); TO_DAY=$(date -d "$2" '+%d')
 
-AMOUNT_OF_DAYS=$((10#$TO_DAY - 10#$DAY))
-HOUR=(0000 0600 1200 1800 0000)
+FROM_to_sec=$(date --date="$1" +%s); TO_to_sec=$(date --date="$2" +%s)
+AMOUNT_OF_DAYS=$(( (TO_to_sec - FROM_to_sec)/86400))
 
-# if YYMM <= 7 month from this date use first link else historical
+HOUR=(0000 0600 1200 1800 0000)
+URL="https://www.ncei.noaa.gov/data/global-forecast-system/access/"
+
+# if YYMM <= 7 month from current date use first link else historical
 now=$(date); active_date=$(date --date="$now -7 month" +%s); date_from=$(date --date="$1" +%s)
+
 if [ $date_from -ge $active_date ]; then
-        DOMAIN="https://www.ncei.noaa.gov/data/global-forecast-system/access/grid-004-0.5-degree/analysis/"
+        DOMAIN="${URL}grid-004-0.5-degree/analysis/"
         PREFIX="gfs_4_"
 else
-        DOMAIN="https://www.ncei.noaa.gov/data/global-forecast-system/access/historical/analysis/"
+        DOMAIN="${URL}historical/analysis/"
         PREFIX="gfsanl_4_"
 fi
 
@@ -38,7 +42,7 @@ for i in `seq 0 $AMOUNT_OF_DAYS`; do
 		sed -i "s/STRYMMDD/${YYMMDD}/g" options/COMMAND
 		sed -i "s/STRYMMDD/${YYMMDD}/g" options/RELEASES
         fi
-        # here we need test date, it is exist in this month or not
+        # set the date for the next day
         date=$(date --date="$1 + $i day");
         FROM_YY=$(date -d "$date" '+%Y'); FROM_MM=$(date -d "$date" '+%m'); FROM_DD=$(date -d "$date" '+%d')
         YYMMDD="${FROM_YY}${FROM_MM}${FROM_DD}"
@@ -48,7 +52,8 @@ for i in `seq 0 $AMOUNT_OF_DAYS`; do
                 # if hour 1800 increment day
 		PR_DD=${FROM_DD}
 		if [ "$j" -eq 3 ]; then
-                        PR_DD=$(date -d "$date +1" '+%d')
+                        PR_date=$(date -d "$date + 1 day")
+                        PR_DD=$(date -d "$PR_date" '+%d')
 		fi
 
                 HH="${HOUR[j]}"
