@@ -13,11 +13,11 @@ export FC=gfortran
 
 # jasper
 
-mkdir flexpart ; cd flexpart
+mkdir flexpart_lib ; cd flexpart_lib
 echo "starting istallation flexpart" >> installation.log
 
 # here you can change the default install location
-export DIR=/home/ubuntu/flexpart
+export DIR=/home/ubuntu/flexpart_lib
 
 wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip ;
 unzip jasper-1.900.1.zip ; rm jasper-1.900.1.zip
@@ -106,34 +106,19 @@ echo "netcdf-fortran istalled" >> installation.log
 rm -rf netcdf-fortran-4.4.5
 
 # flexpart
-
+cd ../
 wget --content-disposition https://www.flexpart.eu/downloads/66
 tar -xvf flexpart_v10.4.tar
 cd flexpart_v10.4_3d7eebf/src
 
-# change parameter in flexpart
+# change ROOT_DIR path in flexpart, provide path where you install flexpart, by default: /home/ubuntu/flexpart_lib
 
-sed -i 's#/homevip/flexpart#/home/ubuntu/flexpart#g' makefile
+sed -i 's#/homevip/flexpart#/home/ubuntu/flexpart_lib#g' makefile
 sed -i 's#/gcc-5.4.0/include#/include#g' makefile
 sed -i 's#/gcc-5.4.0/lib#/lib#g' makefile
-sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/g' par_mod.f90
-# or integer,parameter :: nxmax=721,nymax=361,nuvzmax=64,nwzmax=64,nzmax=64
 
-export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:$DIR/lib'
-export CFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
-export CXXFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
-export FCFLAGS='-L$HDF5/lib -I$HDF5/include -L$NETCDF/lib -I$NETCDF/include'
-export CPPFLAGS='-I${HDF5}/include -I${NETCDF}/include'
-export LDFLAGS='-L${HDF5}/lib -L${NETCDF}/lib'
-
-export PATH=$GRIB_API_BIN:$PATH
-export GRIB_API=$DIR/grib_api/
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GRIB_API/lib
-export GRIB_API_BIN=$GRIB_API/bin
-export GRIB_API_LIB=$GRIB_API/lib
-export GRIB_API_INCLUDE=$GRIB_API/include
-
-source ~/.bashrc
+# uncomment if you want to work with the larger grid 0.5 degree, 1 degree by default
+# sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/g' par_mod.f90
 
 # ncf=yes - to activate NetCDF support
 make -j serial ncf=yes
