@@ -9,14 +9,12 @@
 ! NUMYGRID   = NUMBER OF GRID POINTS IN Y DIRECTION (= No. of cells + 1)       *
 ! DXOUT      = GRID DISTANCE IN X DIRECTION                                    *
 ! DYOUN      = GRID DISTANCE IN Y DIRECTION                                    *
-! OUTHEIGHTS = HEIGHT OF LEVELS (UPPER BOUNDARY)                               *
 !*******************************************************************************
-&OUTGRID
- OUTLON0=    -25.00,
- OUTLAT0=     10.00,
- NUMXGRID=       85,
- NUMYGRID=       65,
- DXOUT=        1.00,
- DYOUT=        1.00,
- OUTHEIGHTS=  100.0, 500.0, 1000.0 , 50000.0,
+&OUTGRIDN
+ OUTLON0N=    120.00,
+ OUTLAT0N=     80.00,
+ NUMXGRIDN=       1,
+ NUMYGRIDN=       1,
+ DXOUTN=        1.00,
+ DYOUTN=        1.00,
  /
