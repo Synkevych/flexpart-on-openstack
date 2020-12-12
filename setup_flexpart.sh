@@ -126,3 +126,13 @@ make -j serial ncf=yes
 
 cd $DIR
 echo "flexpart istalled" >> installation.log
+
+# setup workdir with teplate folder and basic configuration and downloads_grib script (the same as template folder in this repo)
+
+cd ../
+mkdir workdir; cd workdir
+wget http://env.com.ua/~sunkevu4/template.tar.gz
+tar -xvf template.tar.gz ; rm template.tar.gz
+cd template
+# create symbolic link to compiled flexpart 
+ln ../../flexpart_lib/flexpart_v10.4_3d7eebf/src/FLEXPART
