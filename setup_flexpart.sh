@@ -106,10 +106,11 @@ echo "netcdf-fortran istalled" >> installation.log
 rm -rf netcdf-fortran-4.4.5
 
 # flexpart
-cd ../
-wget --content-disposition https://www.flexpart.eu/downloads/66
-tar -xvf flexpart_v10.4.tar
-cd flexpart_v10.4_3d7eebf/src
+
+cd ../ 
+wget --content-disposition http://env.com.ua/~sunkevu4/flexpart/flexpart_v10.4.tar.gz
+tar -xvf flexpart_v10.4.tar.gz ; rm flexpart_v10.4.tar.gz
+cd flexpart_v10.4/src
 
 # change ROOT_DIR path in flexpart, provide path where you install flexpart, by default: /home/ubuntu/flexpart_lib
 
