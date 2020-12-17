@@ -8,13 +8,19 @@ Installation instructions for flexpart  and its components: [flexpart_Installing
 
 ### Main tasks:
 
-1. Create a new instance in OpenStack with certain hardware characteristics and OS
-2. Transfer the script to this machine
-3. The script should download the weather forecast data to the instance
-4. After loading the data, run the flexpart model and wait for the result
-5. After the completion of the calculation, we transfer the result to the remote server
-6. Remove the virtual machine from OpenStack and free up resources for other tasks
+- [x] Create a new instance in OpenStack with certain hardware characteristics and OS  
+- [] Transfer the script to this machine  
+- [x] The script should download the weather forecast data to the instance
+- [x] After loading the data, run the flexpart model and wait for the result
+- [] After the completion of the calculation, we transfer the result to the remote server
+- [] Remove the virtual machine from OpenStack and free up resources for other tasks
 
 Script to run one instance: [launch_instance](launch_instance.sh)
 
 Script to run 100 instances: [run_multiple_instances](run_multiple_instances.sh)
+
+### Improving performance and speed of scripts
+
+- [x] All required scripts are located on ukrainian server www.env.kiew.ua
+- [] Create as OS image with flexpart properly installed
+- [] Upload the forecast to a separate location with the ability to access from all instances
