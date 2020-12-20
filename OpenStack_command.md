@@ -8,7 +8,7 @@ OpenStack is a set of software components that provide common services for cloud
 . ENV.rc
 ```
 
-- See the list of available virtual machines:
+- See the list of available virtual machines
 
 ```bash
 nova list 2>/dev/null
@@ -17,14 +17,15 @@ nova list 2>/dev/null
 openstack server list
 ```
 
-- create new key pair for connect to instate(it is recommended to have a unique key pair for each instance)
+- create new key-pair for connect to instate(it is recommended to have a unique key pair for each instance)
 
 ```bash
 openstack keypair create $KEY_NAME
 
 # and save private key to the file named $KEY_NAME.key in the .ssh/ folder
 openstack keypair create $KEY_NAME >> .ssh/"${KEY_NAME}.key"
-chmod 600 .ssh/"${KEY_NAME}.key"
+# change access to the file for use created file
+chmod 600 .ssh/"${KEY_NAME}.key" 
 ```
 
 - Delete keypair
