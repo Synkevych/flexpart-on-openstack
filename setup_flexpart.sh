@@ -131,5 +131,9 @@ mkdir workdir; cd workdir
 cd $DIR
 tar -xvf template.tar.gz -C ../workdir ; rm template.tar.gz
 cd ../workdir/template
-# create symbolic link to compiled flexpart 
+# create symbolic link to compiled flexpart
 ln ../../flexpart_v10.4/src/FLEXPART
+
+# please do not change any file inside template folder, there are the initial settings
+# copy twmplate folder to any other with the name of your calculation, for example ukraine
+# cp -r template/ ukraine/
