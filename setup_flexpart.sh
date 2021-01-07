@@ -79,8 +79,10 @@ tar -zxvf netcdf-4.6.1.tar.gz ; rm netcdf-4.6.1.tar.gz
 cd  netcdf-4.6.1
 chmod +x configure
 ./configure --prefix=$DIR \
-CPPFLAGS="-I$DIR/include -O" \
-LDFLAGS="-L$DIR/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
+              CPPFLAGS="-I$DIR/include -O" \
+              LDFLAGS="-L$DIR/lib" \
+              --enable-shared --enable-netcdf-4 \
+              --disable-dap --disable-doxygen
 make clean ; make -j ; make -j check
 make install
 
@@ -88,14 +90,15 @@ cd $DIR
 echo "netcdf istalled" >> installation.log
 rm -rf netcdf-4.6.1
 
-# netcd-fortran
+# netcdf-fortran, version depending on netcdf
 
 tar -zxvf netcdf-fortran-4.4.5.tar.gz ; rm netcdf-fortran-4.4.5.tar.gz
 cd  netcdf-fortran-4.4.5
 chmod +x configure
 ./configure --prefix=$DIR \
-CPPFLAGS="-I$DIR/include -O" \
-LDFLAGS="-L$DIR/lib" --enable-shared --disable-doxygen
+              CPPFLAGS="-I$DIR/include -O" \
+              LDFLAGS="-L$DIR/lib" \
+              --enable-shared --disable-doxygen
 make clean ; make -j ; make check ; make check # on first launch, one test fails
 make install
 
@@ -133,3 +136,7 @@ tar -xvf template.tar.gz -C ../workdir ; rm template.tar.gz
 cd ../workdir/template
 # create symbolic link to compiled flexpart
 ln ../../flexpart_v10.4/src/FLEXPART
+
+# please do not change any file inside template folder, there are the initial settings
+# copy twmplate folder to any other with the name of your calculation, for example ukraine
+# cp -r template/ ukraine/
