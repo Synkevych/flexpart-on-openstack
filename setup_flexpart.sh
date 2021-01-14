@@ -118,7 +118,7 @@ sed -i 's#/gcc-5.4.0/include#/include#g' makefile
 sed -i 's#/gcc-5.4.0/lib#/lib#g' makefile
 
 # uncomment if you want to work with the larger grid 0.5 degree, 1 degree by default
-# sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/g' par_mod.f90
+# sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=128,nwzmax=128,nzmax=128/g' par_mod.f90
 
 # ncf=yes - to activate NetCDF support
 make -j serial ncf=yes
