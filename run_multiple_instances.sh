@@ -11,7 +11,7 @@ for i in `seq 1 50`; do
   # wait a minute after starting, the approximate running time of the calculation model
   sleep 60
 
-  # remove instances 
+  # remove instances
   openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack server delete
   echo "2 instances deleted" >> vm_launching.log
   # remove keypair (private and public)

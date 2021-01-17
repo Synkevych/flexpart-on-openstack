@@ -1,8 +1,10 @@
 <h1 align="center"> Flexpart Installation Guide </h1>
 <p align="center">
-FLEXPART (“FLEXible PARTicle dispersion model”) is a Lagrangian transport and dispersion model suitable for the simulation of a large range of atmospheric
-transport processes. Apart from transport and turbulent diffusion, it is able to simulate dry and wet deposition, decay, linear chemistry;  
-it can be used in forward or backward mode, with defined sources or in a domain-filling setting. It can be used from local to global scale.
+FLEXPART (“FLEXible PARTicle dispersion model”) is a Lagrangian transport and dispersion model suitable for the simulation of a large range of atmospheric transport processes. Apart from transport and turbulent diffusion, it is able to simulate dry and wet deposition, decay, linear chemistry; it can be used in forward or backward mode, with defined sources or in a domain-filling setting. It can be used from local to global scale.
+
+Developer site - https://www.flexpart.eu/  
+Repository on GitHub - https://github.com/flexpart/flexpart
+
 <br/>
 FLEXPART - это лагранжева модель дисперсии частиц (LPDM), разработанная Норвежским институтом исследования воздуха, Норвегия. Позволяет исследователям моделировать процессы переноса, диффузии, сухого / влажного осаждения атмосферных частиц из их источников на большие расстояния. Его также можно использовать для обратных вычислений, основанных на наблюдении рецептора для анализа взаимоотношений источник-рецептор.
 
@@ -105,7 +107,7 @@ Add the following lines to the .bashrc-file of your home directory:
  export GRIB_API_LIB=$GRIB_API/lib
  export GRIB_API_INCLUDE=$GRIB_API/include
  export PATH=$GRIB_API_BIN:$PATH
- 
+
  export JASPER=$DIR/jasper
  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$JASPER/lib"
 ```
@@ -126,7 +128,7 @@ tar -xvf eccodes-2.7.3-Source.tar.gz
 
 ### ecCodes
 
-ecCodes is a package developed by ECMWF which provides an application programming interface and a set of tools for decoding and encoding messages in the following formats:  
+ecCodes is a package developed by ECMWF which provides an application programming interface and a set of tools for decoding and encoding messages in the following formats:
 GRIB, BUFR, GTS.
 
 ```bash

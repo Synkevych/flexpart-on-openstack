@@ -19,7 +19,10 @@ echo "starting istallation flexpart" >> installation.log
 # here you can change the default install location
 export DIR=/home/ubuntu/flexpart_lib
 
-wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip ;
+# dowload all libs from env.kiev.ua
+wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tgz
+tar -xvf all_lib.tgz; rm all_lib.tgz
+
 unzip jasper-1.900.1.zip ; rm jasper-1.900.1.zip
 cd jasper-1.900.1
 chmod +x configure
@@ -33,7 +36,6 @@ rm -rf jasper-1.900.1
 
 # grib_api
 
-wget https://people.freebsd.org/~sunpoet/sunpoet/grib_api-1.26.1-Source.tar.gz ;
 tar -xvf grib_api-1.26.1-Source.tar.gz ; rm grib_api-1.26.1-Source.tar.gz
 cd grib_api-1.26.1-Source
 chmod +x configure
@@ -47,7 +49,6 @@ rm -rf grib_api-1.26.1-Source
 
 # zlib
 
-wget https://zlib.net/fossils/zlib-1.2.11.tar.gz ;
 tar -zxvf zlib-1.2.11.tar.gz ; rm zlib-1.2.11.tar.gz
 cd zlib-1.2.11
 chmod +x configure
@@ -61,7 +62,6 @@ rm -rf zlib-1.2.11
 
 # hdf5
 
-wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.17/src/hdf5-1.8.17.tar.gz ;
 tar -zxvf hdf5-1.8.17.tar.gz ; rm hdf5-1.8.17.tar.gz
 cd hdf5-1.8.17/
 chmod +x configure
@@ -75,13 +75,14 @@ rm -rf hdf5-1.8.17
 
 # netcdf
 
-wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.6.1.tar.gz ;
 tar -zxvf netcdf-4.6.1.tar.gz ; rm netcdf-4.6.1.tar.gz
 cd  netcdf-4.6.1
 chmod +x configure
 ./configure --prefix=$DIR \
-CPPFLAGS="-I$DIR/include -O" \
-LDFLAGS="-L$DIR/lib" --enable-shared --enable-netcdf-4 --disable-dap --disable-doxygen
+              CPPFLAGS="-I$DIR/include -O" \
+              LDFLAGS="-L$DIR/lib" \
+              --enable-shared --enable-netcdf-4 \
+              --disable-dap --disable-doxygen
 make clean ; make -j ; make -j check
 make install
 
@@ -89,15 +90,15 @@ cd $DIR
 echo "netcdf istalled" >> installation.log
 rm -rf netcdf-4.6.1
 
-# netcd-fortran
+# netcdf-fortran, version depending on netcdf
 
-wget https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-fortran-4.4.5.tar.gz ;
 tar -zxvf netcdf-fortran-4.4.5.tar.gz ; rm netcdf-fortran-4.4.5.tar.gz
 cd  netcdf-fortran-4.4.5
 chmod +x configure
 ./configure --prefix=$DIR \
-CPPFLAGS="-I$DIR/include -O" \
-LDFLAGS="-L$DIR/lib" --enable-shared --disable-doxygen
+              CPPFLAGS="-I$DIR/include -O" \
+              LDFLAGS="-L$DIR/lib" \
+              --enable-shared --disable-doxygen
 make clean ; make -j ; make check ; make check # on first launch, one test fails
 make install
 
@@ -107,10 +108,8 @@ rm -rf netcdf-fortran-4.4.5
 
 # flexpart
 
-cd ../ 
-wget --content-disposition http://env.com.ua/~sunkevu4/flexpart/flexpart_v10.4.tar.gz
-tar -xvf flexpart_v10.4.tar.gz ; rm flexpart_v10.4.tar.gz
-cd flexpart_v10.4/src
+tar -xvf flexpart_v10.4.tar.gz -C ../; rm flexpart_v10.4.tar.gz
+cd ../flexpart_v10.4/src
 
 # change ROOT_DIR path in flexpart, provide path where you install flexpart, by default: /home/ubuntu/flexpart_lib
 
@@ -119,7 +118,7 @@ sed -i 's#/gcc-5.4.0/include#/include#g' makefile
 sed -i 's#/gcc-5.4.0/lib#/lib#g' makefile
 
 # uncomment if you want to work with the larger grid 0.5 degree, 1 degree by default
-# sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=64,nwzmax=64,nzmax=64/g' par_mod.f90
+# sed -i 's/nxmax=361,nymax=181,nuvzmax=138,nwzmax=138,nzmax=138/nxmax=1441,nymax=721,nuvzmax=128,nwzmax=128,nzmax=128/g' par_mod.f90
 
 # ncf=yes - to activate NetCDF support
 make -j serial ncf=yes
@@ -132,8 +131,12 @@ echo "flexpart istalled" >> installation.log
 
 cd ../
 mkdir workdir; cd workdir
-wget http://env.com.ua/~sunkevu4/template.tar.gz
-tar -xvf template.tar.gz ; rm template.tar.gz
-cd template
-# create symbolic link to compiled flexpart 
-ln ../../flexpart_lib/flexpart_v10.4_3d7eebf/src/FLEXPART
+cd $DIR
+tar -xvf template.tar.gz -C ../workdir ; rm template.tar.gz
+cd ../workdir/template
+# create symbolic link to compiled flexpart
+ln ../../flexpart_v10.4/src/FLEXPART
+
+echo "please do not change any file inside template folder, there are the initial settings"
+echo "copy twmplate folder to any other with the name of your calculation, for example ukraine:"
+echo "cp -r template/ ukraine/"

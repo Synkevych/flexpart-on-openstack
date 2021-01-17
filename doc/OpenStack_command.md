@@ -1,6 +1,8 @@
+# OpenStack
+
 OpenStack is a set of software components that provide common services for cloud infrastructure. OpenStack controls large pools of compute, storage, and networking resources, all managed through APIs or a dashboard.
 
-### A set of commands for working with OpenStack  
+### A set of commands for working with OpenStack
 
 - Set environment variables from file for work with OpenStack infrastructures
 
@@ -8,7 +10,7 @@ OpenStack is a set of software components that provide common services for cloud
 . ENV.rc
 ```
 
-- See the list of available virtual machines:
+- See the list of available virtual machines
 
 ```bash
 nova list 2>/dev/null
@@ -17,13 +19,14 @@ nova list 2>/dev/null
 openstack server list
 ```
 
-- create new key pair for connect to instate(it is recommended to have a unique key pair for each instance)
+- create new key-pair for connect to instate(it is recommended to have a unique key pair for each instance)
 
 ```bash
 openstack keypair create $KEY_NAME
 
 # and save private key to the file named $KEY_NAME.key in the .ssh/ folder
 openstack keypair create $KEY_NAME >> .ssh/"${KEY_NAME}.key"
+# change access to the file for use created file
 chmod 600 .ssh/"${KEY_NAME}.key"
 ```
 
@@ -49,7 +52,7 @@ openstack server create --flavor 4 \
 nova boot --flavor 3 --image 5c4ceaf0-2d65-46a0-b62d-4be163804809 --key-name cloud_key --security-groups d134acb2-e6bc-4c82-a294-9617fdf7bf07 --user-data \
 /home/helloworld.sh $VMNAME 2>/dev/null
 
-# --user-date used for passed the script helloworld.sh for execution
+# --user-data used for passed the script helloworld.sh for execution
 ```
 
 - show all available cpu/ram/rom on OpenStack
