@@ -81,7 +81,7 @@ After installation a new folder lib/jasper appears, and it's save to remove fold
  wget https://people.freebsd.org/~sunpoet/sunpoet/grib_api-1.26.1-Source.tar.gz
  tar -xvf grib_api-1.26.1-Source.tar.gz -C ../lib/
  cd ~/lib/grib_api-1.26.1-Source/
-./configure --prefix=~/lib/grib_api --with-jasper=~/lib/jasper 
+./configure --prefix=~/lib/grib_api --with-jasper=~/lib/jasper
 
 make
 make check

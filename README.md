@@ -1,20 +1,34 @@
-# openstack
-
+<h1 align="center"> flexpart-on-openstack </h1>
+<p align="center">
 This is a project to create many (a dozen or more) virtual machines(instance) in cloud web services based on OpenStack, to calculate a flexpart model for predicting the spread of air pollution.
 
-The main commands for working with OpenStack are described in the file: [OpenStack_command](OpenStack_command.md)
+The main commands for working with OpenStack are described in the [OpenStack Command](doc/OpenStack_command.md) file. Installation instructions for flexpart and its component - [Flexpart Installing](doc/flexpart_Installing.md).
+</p>
 
-Installation instructions for flexpart  and its components: [flexpart_Installing](flexpart_Installing.md)
+### Features
 
-### Main tasks:
+- Create a new instance in OpenStack with certain hardware characteristics and OS
+- Transfer setup_flexpart.sh script to this machine
+- Setup flexpart and they all dependencies
+- Download the weather forecast data to the instance according to the task
+- Run the flexpart model and wait for the result
+- After the completion of the calculation, transfer the result to the remote server
+- Remove the virtual machine from OpenStack and free up resources for other tasks
 
-1. Create a new instance in OpenStack with certain hardware characteristics and OS
-2. Transfer the script to this machine
-3. The script should download the weather forecast data to the instance
-4. After loading the data, run the flexpart model and wait for the result
-5. After the completion of the calculation, we transfer the result to the remote server
-6. Remove the virtual machine from OpenStack and free up resources for other tasks
+### Scripts
 
-Script to run one instance: [launch_instance](launch_instance.sh)
+- Script to run a single instance in openstack: [launch_instance](launch_instance.sh)
+- Script to run multiple instances(100): [run_multiple_instances](run_multiple_instances.sh)
+- Automatic configuration flexpart: [setup_flexpart](setup_flexpart.sh)
+- Download grib files: [downloads_grib](downloads_grib.sh)
 
-Script to run 100 instances: [run_multiple_instances](run_multiple_instances.sh)
+### Improving performance and speed of scripts
+
+- All required scripts are located on [ukrainian server](www.env.kiew.ua)
+- Create as OS image with flexpart properly installed
+- Upload the forecast to a separate location with the ability to access from all instances
+
+### References
+
+- Flexpart cite: <http://flexpart.eu/>
+- Weather forecast site: <https://www.ncei.noaa.gov/>
