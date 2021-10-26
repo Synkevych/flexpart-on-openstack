@@ -37,7 +37,7 @@ while true; do
      if [ "x$STATUS" = "xACTIVE" ]; then
        echo "VM $VMNAME is $STATUS, IP address $IP, system $SYSTEM" >> vm_launching.log
        printf "To connect use: ssh -i $FILE_PATH ubuntu@$IP\n"
-       echo "To connect use: ssh -i $FILE_PATH ubuntu@$IP\n" >> vm_launching.log
+       echo -e "To connect use: ssh -i $FILE_PATH ubuntu@$IP\n" >> vm_launching.log
        # if the VM is created without errors exit from script
        exit
      fi
