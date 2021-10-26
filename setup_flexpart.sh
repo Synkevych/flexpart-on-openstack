@@ -138,5 +138,5 @@ cd ../workdir/template
 ln ../../flexpart_v10.4/src/FLEXPART
 
 echo "please do not change any file inside template folder, there are the initial settings"
-echo "copy twmplate folder to any other with the name of your calculation, for example ukraine:"
+echo "copy template folder to any other with the name of your calculation, for example ukraine:"
 echo "cp -r template/ ukraine/"
