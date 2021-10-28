@@ -19,6 +19,10 @@ nova list 2>/dev/null
 openstack server list
 ```
 
+- create new flavor list
+
+`openstack flavor create --public m16.large --id 16 --ram 16384 --disk 40 --vcpus 16`
+
 - create new key-pair for connect to instate(it is recommended to have a unique key pair for each instance)
 
 ```bash
