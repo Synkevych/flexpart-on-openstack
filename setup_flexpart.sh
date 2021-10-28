@@ -1,5 +1,5 @@
 #!/bin/bash
-# you need to tun this script as a sudo user
+# you need to run this script as a sudo user
 
 # exit on the first error
 set -e
