@@ -17,6 +17,9 @@ nova list 2>/dev/null
 #  2>/dev/null command that cancels standard output and show only info about running VM
 # or
 openstack server list
+
+# grep all machines by 'flexpart' name 
+openstack server list | grep flexpart
 ```
 
 - create new flavor list
@@ -77,8 +80,12 @@ openstack flavor list
 
 ```bash
 openstack image list
+
 # show images only with Ubuntu
 openstack image list | grep -i Ubuntu-14
+
+# create new image from running instance (use $nova list to show current images)
+nova image-create current-instance-id new-image-name
 ```
 
 - list of security group
@@ -100,8 +107,10 @@ ssh -i ~/.ssh/KEY_NAME.pem USER@SERVER_IP
 ```bash
 openstack server pause vm_name # or ID
 # make active
+
 openstack server unpause vm_name
 # shutoff
+
 openstack server stop vm_name
 openstack server start vm_name
 ```
