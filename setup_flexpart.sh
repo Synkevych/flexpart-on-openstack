@@ -17,7 +17,7 @@ mkdir flexpart_lib ; cd flexpart_lib
 echo "starting istallation flexpart" >> installation.log
 
 # here you can change the default install location
-export DIR=/home/ubuntu/flexpart_lib
+export DIR=$(pwd)
 
 # dowload all libs from env.kiev.ua
 wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tgz
