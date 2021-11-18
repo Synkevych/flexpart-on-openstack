@@ -133,3 +133,9 @@ openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack se
 nova hypervisor-list
 # useful if you can't connect to your instance
 ```
+
+### Copy file from main server to vm
+
+`scp user_name@host.kyiv.ua:/home/user_name/archive.tar.xz .` - copy file to current path, you should provide host, user name and password;  
+`tar -xvf archive.tar.xz` - unzip tar file  
+
