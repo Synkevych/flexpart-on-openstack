@@ -125,6 +125,10 @@ openstack server delete myNewServer
 openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack server delete
 ```
 
+- Take a snapshot of your instance
+
+`openstack server image create --name test_snapshot <instance name or uuid>`
+
 ### Handling error
 
 - Show hypervisor hostname, it's state and status
