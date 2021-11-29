@@ -5,7 +5,7 @@
 set -e
 
 sudo apt-get update
-sudo apt-get -y install g++ gfortran autoconf libtool automake flex make
+sudo apt-get -y install g++ gfortran autoconf libtool automake flex make wget unzip
 
 export CC=gcc
 export CXX=g++
