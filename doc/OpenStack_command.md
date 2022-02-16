@@ -119,15 +119,31 @@ openstack server start vm_name
 
 ```bash
 nova delete 3fa580df-0035-4d2c-809a-cdefe66a9d41 2>/dev/null
+
 # or
+
 openstack server delete myNewServer
+
 # or for multiply
+
 openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack server delete
 ```
 
 - Take a snapshot of your instance
 
 `openstack server image create --name test_snapshot <instance name or uuid>`
+
+- Download the snapshot as an image
+
+`glance image-download --file snapshot-name.raw image-ID`
+
+- Save an image as a file (to download it later)
+
+`openstack image save --file snapshot-name.raw image-ID`
+
+- Import the snapshot to the new environment
+
+`openstack image create --container-format bare --disk-format qcow2 --file snapshot-name.raw myInstanceSnapshot`
 
 ### Handling error
 
