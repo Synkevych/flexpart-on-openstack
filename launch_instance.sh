@@ -2,7 +2,7 @@
 
 HASH=`date --utc +%Y%m%d%H%M`; FLAVOR="m1.large"; VMNAME="flexpart_${FLAVOR/./_}_${HASH}"
 
-cd ;. WRF-UNG.rc
+cd ;. WRF-UNG.rc # source OpenStack environment variable values
 
 KEY_PATH=.ssh/"${VMNAME}.key"
 openstack keypair create $VMNAME >> $KEY_PATH; chmod 600 .ssh/"${VMNAME}.key"
