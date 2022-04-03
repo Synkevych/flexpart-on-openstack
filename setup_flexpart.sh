@@ -20,9 +20,9 @@ echo "start installing flexpart" >> installation.log
 
 # dowload all libs from env.kiev.ua
 wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tgz
-tar -xvf all_lib.tgz; rm all_lib.tgz
+tar -xvf all_lib.tgz; mkdir tmp; mv all_lib.tgz tmp;
 
-unzip jasper-1.900.1.zip ; rm jasper-1.900.1.zip
+unzip jasper-1.900.1.zip ; mv jasper-1.900.1.zip tmp;
 cd jasper-1.900.1
 chmod +x configure
 ./configure --prefix=$DIR
@@ -35,7 +35,7 @@ rm -rf jasper-1.900.1
 
 # grib_api
 
-tar -xvf grib_api-1.26.1-Source.tar.gz ; rm grib_api-1.26.1-Source.tar.gz
+tar -xvf grib_api-1.26.1-Source.tar.gz ; mv grib_api-1.26.1-Source.tar.gz tmp;
 cd grib_api-1.26.1-Source
 chmod +x configure
 ./configure --prefix=$DIR --with-jasper=$DIR --disable-shared
@@ -48,7 +48,7 @@ rm -rf grib_api-1.26.1-Source
 
 # zlib
 
-tar -zxvf zlib-1.2.11.tar.gz ; rm zlib-1.2.11.tar.gz
+tar -zxvf zlib-1.2.11.tar.gz ; mv zlib-1.2.11.tar.gz tmp;
 cd zlib-1.2.11
 chmod +x configure
 ./configure --prefix=$DIR
@@ -61,7 +61,7 @@ rm -rf zlib-1.2.11
 
 # hdf5
 
-tar -zxvf hdf5-1.8.17.tar.gz ; rm hdf5-1.8.17.tar.gz
+tar -zxvf hdf5-1.8.17.tar.gz ; mv hdf5-1.8.17.tar.gz tmp;
 cd hdf5-1.8.17/
 chmod +x configure
 ./configure --prefix=$DIR --with-zlib=$DIR
@@ -74,7 +74,7 @@ rm -rf hdf5-1.8.17
 
 # netcdf
 
-tar -zxvf netcdf-4.6.1.tar.gz ; rm netcdf-4.6.1.tar.gz
+tar -zxvf netcdf-4.6.1.tar.gz ; mv netcdf-4.6.1.tar.gz tmp;
 cd  netcdf-4.6.1
 chmod +x configure
 ./configure --prefix=$DIR \
@@ -91,7 +91,7 @@ rm -rf netcdf-4.6.1
 
 # netcdf-fortran, version depending on netcdf
 
-tar -zxvf netcdf-fortran-4.4.5.tar.gz ; rm netcdf-fortran-4.4.5.tar.gz
+tar -zxvf netcdf-fortran-4.4.5.tar.gz ; mv netcdf-fortran-4.4.5.tar.gz tmp;
 cd  netcdf-fortran-4.4.5
 chmod +x configure
 ./configure --prefix=$DIR \
@@ -107,7 +107,7 @@ rm -rf netcdf-fortran-4.4.5
 
 # flexpart
 
-tar -xvf flexpart_v10.4.tar.gz -C ../; rm flexpart_v10.4.tar.gz
+tar -xvf flexpart_v10.4.tar.gz -C ../; mv flexpart_v10.4.tar.gz tmp;
 cd ../flexpart_v10.4/src
 
 # change ROOT_DIR path in flexpart, provide path where you install flexpart, by default: /home/ubuntu/flexpart_lib
@@ -131,7 +131,7 @@ echo "flexpart istalled" >> installation.log
 cd ../
 mkdir workdir; cd workdir
 cd $DIR
-tar -xvf template.tar.gz -C ../workdir ; rm template.tar.gz
+tar -xvf template.tar.gz -C ../workdir ; mv template.tar.gz tmp;
 cd ../workdir/template
 # create symbolic link to compiled flexpart
 ln ../../flexpart_v10.4/src/FLEXPART
@@ -139,3 +139,4 @@ ln ../../flexpart_v10.4/src/FLEXPART
 echo "please do not change any file inside template folder, there are the initial settings"
 echo "copy template folder to any other with the name of your calculation, for example ukraine:"
 echo "cp -r template/ ukraine/"
+echo "All unzipped files are located on tmp folder, you can remove them if flexpart works"
