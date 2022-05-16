@@ -5,7 +5,7 @@
 set -e
 
 sudo apt-get update
-sudo apt-get -y install g++ gfortran autoconf libtool automake flex make wget unzip
+sudo apt-get -y install g++ gfortran autoconf libtool automake flex make wget
 
 export CC=gcc
 export CXX=g++
@@ -19,10 +19,10 @@ export DIR=$(pwd)
 echo "start installing flexpart" >> installation.log
 
 # dowload all libs from env.kiev.ua
-wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tgz
-tar -xvf all_lib.tgz; mkdir tmp; mv all_lib.tgz tmp;
+wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tar.gz
+tar -xvf all_libs.tar.gz; mkdir tmp; mv all_libs.tar.gz tmp;
 
-unzip jasper-1.900.1.zip ; mv jasper-1.900.1.zip tmp;
+tar jasper-1.900.1.tar.gz ; mv jasper-1.900.1.tar.gz tmp;
 cd jasper-1.900.1
 chmod +x configure
 ./configure --prefix=$DIR
