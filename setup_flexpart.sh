@@ -19,7 +19,7 @@ export DIR=$(pwd)
 echo "start installing flexpart" >> installation.log
 
 # dowload all libs from env.kiev.ua
-wget http://env.com.ua/~sunkevu4/flexpart/all_lib.tar.gz
+wget http://env.com.ua/~sunkevu4/flexpart/all_libs.tar.gz
 tar -xvf all_libs.tar.gz; mkdir tmp; mv all_libs.tar.gz tmp;
 
 tar jasper-1.900.1.tar.gz ; mv jasper-1.900.1.tar.gz tmp;
