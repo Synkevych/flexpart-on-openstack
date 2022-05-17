@@ -24,7 +24,7 @@ The main commands for working with OpenStack are described in the [OpenStack Com
 
 ### Improving performance and speed of scripts
 
-- All required scripts are located on [ukrainian server](www.env.kiew.ua)
+- All required scripts are located on [ukrainian server](http://env.com.ua/~sunkevu4/flexpart/all_libs.tar.gz) or [github mirror](https://github.dev/Synkevych/flexpart-on-openstack/libs)
 - Create as OS image with flexpart properly installed
 - Upload the forecast to a separate location with the ability to access from all instances
 
