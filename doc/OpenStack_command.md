@@ -145,6 +145,16 @@ openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack se
 
 `openstack image create --container-format bare --disk-format qcow2 --file snapshot-name.raw myInstanceSnapshot`
 
+- Change fixed ip address
+
+```
+# remove existing IP
+openstack server remove fixed ip flexpart_m1_medium_202205181240 10.0.1.107
+
+# generate a new random IP
+openstack server add fixed ip  b4e19b8d-eca7-42eb-b686-2ac3e278a4dc wrf-private
+```
+
 ### Handling error
 
 - Show hypervisor hostname, it's state and status

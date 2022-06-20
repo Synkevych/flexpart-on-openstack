@@ -22,7 +22,7 @@ echo "start installing flexpart" >> installation.log
 wget http://env.com.ua/~sunkevu4/flexpart/all_libs.tar.gz
 tar -xvf all_libs.tar.gz; mkdir tmp; mv all_libs.tar.gz tmp;
 
-tar jasper-1.900.1.tar.gz ; mv jasper-1.900.1.tar.gz tmp;
+tar -xvf jasper-1.900.1.tar.gz ; mv jasper-1.900.1.tar.gz tmp;
 cd jasper-1.900.1
 chmod +x configure
 ./configure --prefix=$DIR
