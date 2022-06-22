@@ -1,8 +1,14 @@
 #!/bin/bash
 
-HASH=`date --utc +%Y%m%d%H%M`; FLAVOR="m1.large"; VMNAME="flexpart_${FLAVOR/./_}_${HASH}"
+set -e
 
-cd ;. WRF-UNG.rc # source OpenStack environment variable values
+HASH=`date --utc +%Y%m%d%H%M`; FLAVOR="m1.large"; VMNAME="flexpart_${FLAVOR/./_}_${HASH}"
+TIME=$(date "+%d.%m.%Y-%H:%M:%S"); TIMER=20; w=.ssh/"${VMNAME}.key"
+
+# test is there resources for a new instance
+source test_quotas.sh $FLAVOR
+
+. ENV # source OpenStack environment variable values
 
 KEY_PATH=.ssh/"${VMNAME}.key"
 openstack keypair create $VMNAME >> $KEY_PATH; chmod 600 .ssh/"${VMNAME}.key"
@@ -35,5 +41,16 @@ for i in `seq 1 3`; do
   fi
 done
 
+if test -z "$STATUS"; then
+        echo "Launching $VMNAME failed"
+        echo -e "$TIME Launching VM $VMNAME failed\n" >> vm_launching.log
+        rm ".ssh/${VMNAME}.key"
+        openstack keypair delete ${VMNAME}`
+        exit
+fi
+
 printf "Launching $VMNAME failed"
 echo -e "Launching $VMNAME failed with status: $STATUS\n" >> vm_launching.log
+rm ".ssh/${VMNAME}.key"
+openstack keypair delete ${VMNAME}`
+openstack server delete `openstack server list | grep $VMNAME | awk '{ print $2 }'`

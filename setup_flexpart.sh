@@ -1,7 +1,5 @@
 #!/bin/bash
-# you need to run this script as a sudo user
 
-# exit on the first error
 set -e
 
 sudo apt-get update
@@ -29,6 +27,13 @@ chmod +x configure
 make clean ; make -j ; make -j check
 make install
 
+cat >> bashrc_flexpart << END
+export JASPERLIB=\$DIR/lib
+export JASPERINC=\$DIR/include
+export HWRF=1
+END
+. bashrc_flexpart
+
 cd $DIR
 echo "jasper istalled" >> installation.log
 rm -rf jasper-1.900.1
@@ -54,6 +59,14 @@ chmod +x configure
 ./configure --prefix=$DIR
 make clean ; make -j ; make -j check
 make install
+
+cat >> bashrc_flexpart << END
+export PATH=\$DIR/lib:\$PATH
+export LD_LIBRARY_PATH=\$DIR/lib:\$LD_LIBRARY_PATH
+export LDFLAGS=-L\$DIR/lib
+export CPPFLAGS=-I\$DIR/include
+END
+. bashrc_flexpart
 
 cd $DIR
 echo "zlib istalled" >> installation.log
@@ -84,6 +97,12 @@ chmod +x configure
               --disable-dap --disable-doxygen
 make clean ; make -j ; make -j check
 make install
+
+cat >> bashrc_flexpart << END
+export NETCDF=\$DIR
+export PATH=\$DIR/bin:\$PATH
+END
+. bashrc_flexpart
 
 cd $DIR
 echo "netcdf istalled" >> installation.log
