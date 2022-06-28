@@ -16,7 +16,8 @@ C ------------------------------------------------ C
       integer nx,ny,ndim,nt
       parameter(nx=360,ny=180,nt=361,ndim=3)
       ! dataset variables
-      real xvar(nx),yvar(ny),tvar(nt)         ! dimension variables
+      real tvar(nt)         ! dimension variables
+      real, allocatable :: yvar(:), xvar(:)
       real cvar(nx,ny,nt)                     ! data from spec001_mr
       ! netcdf 'communication' variables
       integer cvar_id,x_id,y_id,t_id         ! variable IDs
@@ -41,9 +42,13 @@ C ==== Inquire call =============================== C
       ! inquire call
       state = nf_inq(ncid,dim,var,gatt,unlim)
       if (state .ne. nf_noerr) call handle_err(state)
-      ! get longitude and latitude
+
+      state = nf_inq_dim(ncid,1,recname,nt)
       state = nf_inq_dim(ncid,2,recname,lat)
       state = nf_inq_dim(ncid,3,recname,lon)
+
+      allocate(xvar(lon), yvar(lat), tvar(nt))
+
       print*, 'latitude ', lat, 'longitude ', lon
       print*
 
@@ -58,17 +63,24 @@ C ==== Read existing netCDF file ================== C
       state = nf_inq_varid(ncid,'latitude',y_id)
       state = nf_get_var_real(ncid,y_id,yvar)
       if (state .ne. nf_noerr) call handle_err(state)
-              print*, '  (2) Latitudes read',yvar(1)
+      print*, ' size of latitude', size(yvar, DIM=1)
+      print*, '  (2) Latitudes read', yvar(1)
+
+      state = nf_inq_varid(ncid,'latitude',y_id)
+      state=nf_get_var_real(ncid,y_id,yvar)
+      if (state .ne. nf_noerr) call handle_err(state)
+      print*, ' size of latitude', size(yvar, DIM=1)
 
       state = nf_inq_varid(ncid,'time',t_id)
-      state = nf_get_var_real(ncid,t_id,tvar)
+      state=nf_get_var_real(ncid,t_id,tvar)
       if (state .ne. nf_noerr) call handle_err(state)
-              print*, '  (3) Times read',tvar(1),tvar(260)
+      print*, ' size of time', size(tvar, DIM=1)
+      print*, '  (3) Times read'
 
       state = nf_inq_varid(ncid,'spec001_mr',cvar_id)
-              state=nf_get_var_real(ncid,cvar_id,cvar)
-              if (state.ne.nf_noerr) call handle_err(state)
-              print*, '  (4) Data variable read'
+      state=nf_get_var_real(ncid,cvar_id,cvar)
+      if (state.ne.nf_noerr) call handle_err(state)
+      print*, '  (4) Data variable read'
 
       print*, '   > Read complete'
       print*
