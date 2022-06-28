@@ -14,11 +14,9 @@ C ------------------------------------------------ C
       integer x,y,t
       ! file specifics
       integer nx,ny,ndim,nt
-      parameter(nx=360,ny=180,nt=361,ndim=3)
       ! dataset variables
-      real tvar(nt)         ! dimension variables
-      real, allocatable :: yvar(:), xvar(:)
-      real cvar(nx,ny,nt)                     ! data from spec001_mr
+      real, allocatable :: yvar(:), xvar(:),tvar(:)  ! dimension variables
+      real, allocatable :: cvar(:,:,:,:,:,:)  ! data from spec001_mr
       ! netcdf 'communication' variables
       integer cvar_id,x_id,y_id,t_id         ! variable IDs
       integer state,ncid                     ! return value and file ID
@@ -26,6 +24,9 @@ C ------------------------------------------------ C
       character*(nf_max_name) recname
 
       integer lat,lon,imx,sizet,sizes
+      integer nageclass, pointspec, height, nnt, nns, j, t
+      parameter(nageclass=1,pointspec=31,height=1)
+      real dt
 
       path='/home/sebastian/research/TIP/data/'  ! path to dataset
       infile='grid_time_20200421000000.nc'       ! dataset name
@@ -48,8 +49,9 @@ C ==== Inquire call =============================== C
       state = nf_inq_dim(ncid,3,recname,lon)
 
       allocate(xvar(lon), yvar(lat), tvar(nt))
+      allocate(cvar(nageclass,pointspec,nt,height,lat,lon))
 
-      print*, 'latitude ', lat, 'longitude ', lon
+      print*, ' time ', nt, 'latitude ', lat, 'longitude ', lon
       print*
 
 C ==== Read existing netCDF file ================== C
@@ -75,12 +77,27 @@ C ==== Read existing netCDF file ================== C
       state=nf_get_var_real(ncid,t_id,tvar)
       if (state .ne. nf_noerr) call handle_err(state)
       print*, ' size of time', size(tvar, DIM=1)
-      print*, '  (3) Times read'
+
+      dt = tvar(1) - tvar(2)
+      print*, tvar(1), '-', tvar(2), ' dt= ', dt
 
       state = nf_inq_varid(ncid,'spec001_mr',cvar_id)
       state=nf_get_var_real(ncid,cvar_id,cvar)
       if (state.ne.nf_noerr) call handle_err(state)
-      print*, '  (4) Data variable read'
+      print*, ' size of data', cvar(1,1,1,1,1,1)
+      nnt=size(cvar, DIM=4)
+      nns=size(cvar, DIM=5)
+
+      OPEN(1000, FILE='srs_1.bin',FORM='UNFORMATTED')
+      write(1000)lat,lon
+
+      do j=1,nns
+        do i=1,nnt
+                write(1000)cvar(:,:,1,i,j,1)
+        end do
+      end do
+
+      CLOSE(1000)
 
       print*, '   > Read complete'
       print*
