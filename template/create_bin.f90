@@ -27,6 +27,7 @@ C ------------------------------------------------ C
       integer nageclass, pointspec, height, nnt, nns, j, t
       parameter(nageclass=1,pointspec=31,height=1)
       real dt
+      character*60 :: file_id_str
 
       path='/home/sebastian/research/TIP/data/'  ! path to dataset
       infile='grid_time_20200421000000.nc'       ! dataset name
@@ -84,12 +85,13 @@ C ==== Read existing netCDF file ================== C
       state = nf_inq_varid(ncid,'spec001_mr',cvar_id)
       state=nf_get_var_real(ncid,cvar_id,cvar)
       if (state.ne.nf_noerr) call handle_err(state)
-      print*, ' size of spec001_mr 1', size(cvar, DIM=1)
-      print*, ' size of spec001_mr 2', size(cvar, DIM=2)
-      print*, ' size of spec001_mr 3', size(cvar, DIM=3)
-      print*, ' size of spec001_mr 4', size(cvar, DIM=4)
-      print*, ' size of spec001_mr 5', size(cvar, DIM=5)
-      print*, ' size of spec001_mr 6', size(cvar, DIM=6)
+      print*, ' spec001_mr infos :'
+      print*, ' size of nageclass 1', size(cvar, DIM=1)
+      print*, ' size of pointspec 2', size(cvar, DIM=2)
+      print*, ' size of time 3', size(cvar, DIM=3)
+      print*, ' size of height 4', size(cvar, DIM=4)
+      print*, ' size of latitude 5', size(cvar, DIM=5)
+      print*, ' size of longitude 6', size(cvar, DIM=6)
       print*, ' value from spec001_me ', cvar(1,1,1,1,1,1)
       srs_size=size(cvar, DIM=2)
       nnt=size(cvar, DIM=4)
@@ -105,6 +107,23 @@ C ==== Read existing netCDF file ================== C
             end do
       end do
       CLOSE(1000)
+
+      ! OPEN(1, FILE='grid.dat',form='formatted')
+      do file_id=1,srs_size
+        ! transform the integer to character
+        write(file_id_str, *), file_id
+
+        ! Construct the filename:
+        file_name = 'srs_' // trim(adjustl(file_id_str)) // '.dat'
+        open(file_id, file=file_name ,form='formatted')
+        do j=1,size(yvar, DIM=1) ! latitude
+          do i=1,size(xvar, DIM=1) ! longitude
+            write(file_id,11) xvar(i), yvar(j)
+            11 format(F10.6, F10.6)
+          end do
+        end do
+        CLOSE(file_id)
+      end do
 
       print*, '   > Read complete'
       print*
