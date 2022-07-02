@@ -84,26 +84,33 @@ C ==== Read existing netCDF file ================== C
       state = nf_inq_varid(ncid,'spec001_mr',cvar_id)
       state=nf_get_var_real(ncid,cvar_id,cvar)
       if (state.ne.nf_noerr) call handle_err(state)
-      print*, ' size of data', cvar(1,1,1,1,1,1)
+      print*, ' size of spec001_mr 1', size(cvar, DIM=1)
+      print*, ' size of spec001_mr 2', size(cvar, DIM=2)
+      print*, ' size of spec001_mr 3', size(cvar, DIM=3)
+      print*, ' size of spec001_mr 4', size(cvar, DIM=4)
+      print*, ' size of spec001_mr 5', size(cvar, DIM=5)
+      print*, ' size of spec001_mr 6', size(cvar, DIM=6)
+      print*, ' value from spec001_me ', cvar(1,1,1,1,1,1)
+      srs_size=size(cvar, DIM=2)
       nnt=size(cvar, DIM=4)
       nns=size(cvar, DIM=5)
 
-      OPEN(1000, FILE='srs_1.bin',FORM='UNFORMATTED')
-      write(1000)lat,lon
+      ! create grid using long and lat
+      OPEN(1000, FILE='grid.dat',STATUS="NEW",ACTION="WRITE")
 
-      do j=1,nns
-        do i=1,nnt
-                write(1000)cvar(:,:,1,i,j,1)
-        end do
+      do j=1,size(yvar, DIM=1) ! latitude
+            do i=1,size(xvar, DIM=1) ! longitude
+                  write(1000,11) xvar(i), yvar(j)
+                  11 format(F10.6, F10.6)
+            end do
       end do
-
       CLOSE(1000)
 
       print*, '   > Read complete'
       print*
 
 ! close file
-      state = nf_close(ncid)
+      state = nf_close(ncid)ls
               if (state.ne.nf_noerr) call handle_err(state)
               print*, '  > File closed: ', path//outfile
       end
