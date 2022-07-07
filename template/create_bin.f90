@@ -27,7 +27,7 @@ C ------------------------------------------------ C
       integer nageclass, pointspec, height, nnt, nns, j, t
       parameter(nageclass=1,pointspec=31,height=1)
       real dt
-      character*60 :: file_id_str
+      character*60 :: file_name, file_id_c
 
       path='/home/sebastian/research/TIP/data/'  ! path to dataset
       infile='grid_time_20200421000000.nc'       ! dataset name
@@ -69,11 +69,6 @@ C ==== Read existing netCDF file ================== C
       print*, ' size of latitude', size(yvar, DIM=1)
       print*, '  (2) Latitudes read', yvar(1)
 
-      state = nf_inq_varid(ncid,'latitude',y_id)
-      state=nf_get_var_real(ncid,y_id,yvar)
-      if (state .ne. nf_noerr) call handle_err(state)
-      print*, ' size of latitude', size(yvar, DIM=1)
-
       state = nf_inq_varid(ncid,'time',t_id)
       state=nf_get_var_real(ncid,t_id,tvar)
       if (state .ne. nf_noerr) call handle_err(state)
@@ -96,30 +91,36 @@ C ==== Read existing netCDF file ================== C
       srs_size=size(cvar, DIM=2)
       nnt=size(cvar, DIM=4)
       nns=size(cvar, DIM=5)
+      allocate(cplot(nns,nnt,nnt))
 
       ! create grid using long and lat
-      OPEN(1000, FILE='grid.dat',STATUS="NEW",ACTION="WRITE")
-
-      do j=1,size(yvar, DIM=1) ! latitude
-            do i=1,size(xvar, DIM=1) ! longitude
+      OPEN(1000, FILE='grid.dat', STATUS="NEW", ACTION="WRITE")
+      do j=1,lat ! latitude
+            do i=1,lon ! longitude
+!                  cplot(1,1,j)=cplot(1,1,j)+cvar(1,1,1,i,j,1)
                   write(1000,11) xvar(i), yvar(j)
                   11 format(F10.6, F10.6)
             end do
       end do
       CLOSE(1000)
 
-      ! OPEN(1, FILE='grid.dat',form='formatted')
-      do file_id=1,srs_size
-        ! transform the integer to character
-        write(file_id_str, *), file_id
 
-        ! Construct the filename:
-        file_name = 'srs_' // trim(adjustl(file_id_str)) // '.dat'
-        open(file_id, file=file_name ,form='formatted')
-        do j=1,size(yvar, DIM=1) ! latitude
-          do i=1,size(xvar, DIM=1) ! longitude
-            write(file_id,11) xvar(i), yvar(j)
-            11 format(F10.6, F10.6)
+
+      do file_id=1,1
+        ! transform the integer to character
+        write(file_id_c, *) file_id
+
+        do t=1,size(cvar, DIM=3)
+
+          ! Construct the filename:
+          file_name = 'srs_' // trim(adjustl(file_id_c)) // '.dat'
+          open(file_id, file=file_name ,form='formatted')
+          do jj=1,lat ! latitude
+            do ii=1,lon ! longitude
+              ! cplot(1,1,jj)=cplot(1,1,jj)+cvar(1,1,1,ii,jj,1)
+              write(file_id,12) xvar(ii), yvar(jj), cvar(1,file_id,1,t,ii,jj)
+              12 format(F10.6, F10.6, F10.6)
+            end do
           end do
         end do
         CLOSE(file_id)
