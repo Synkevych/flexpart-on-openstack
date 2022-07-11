@@ -97,35 +97,32 @@ C ==== Read existing netCDF file ================== C
       OPEN(1000, FILE='grid.dat', STATUS="NEW", ACTION="WRITE")
       do j=1,lat ! latitude
             do i=1,lon ! longitude
-!                  cplot(1,1,j)=cplot(1,1,j)+cvar(1,1,1,i,j,1)
                   write(1000,11) xvar(i), yvar(j)
                   11 format(F10.6, F10.6)
             end do
       end do
       CLOSE(1000)
 
-
-
-      do file_id=1,1
+      do file_id=1,size(cvar, DIM=2) ! pointspec 31
         ! transform the integer to character
         write(file_id_c, *) file_id
-
-        do t=1,size(cvar, DIM=3)
-
-          ! Construct the filename:
-          file_name = 'srs_' // trim(adjustl(file_id_c)) // '.dat'
-          open(file_id, file=file_name ,form='formatted')
-          do jj=1,lat ! latitude
-            do ii=1,lon ! longitude
-              ! cplot(1,1,jj)=cplot(1,1,jj)+cvar(1,1,1,ii,jj,1)
-              write(file_id,12) xvar(ii), yvar(jj), cvar(1,file_id,1,t,ii,jj)
-              12 format(F10.6, F10.6, F10.6)
+        OPEN(100, FILE='srs_1.dat', STATUS="REPLACE", ACTION="WRITE")
+        ! Construct the filename:
+        file_name = 'srs_' // trim(adjustl(file_id_c)) // '.dat'
+        open(file_id,file=file_name,status='create',form='formatted',action="write")
+        do n3=1,size(cvar, DIM=3)       ! time 72
+          do n4=1,size(cvar, DIM=4)     ! height 1
+            do n5=1,size(cvar, DIM=5)   ! lon 400
+              do n6=1,size(cvar, DIM=6) ! lat 322
+                write(100,12) cvar(1,file_id,n3,n4,n5,n6)
+                12 format(F10.6)
+              end do
             end do
           end do
         end do
         CLOSE(file_id)
+        print*,'File ', file_name, 'saved'
       end do
-
       print*, '   > Read complete'
       print*
 
