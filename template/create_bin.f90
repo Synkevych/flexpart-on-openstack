@@ -1,21 +1,14 @@
-C ================================================ C
-C //////////////////////////////////////////////// C
-C ================================================ C
-      program netCDF_rw
+program netCDF_rw
 
       implicit none
       include 'netcdf.inc'
 
-C ------------------------------------------------ C
-C ---- VARIABLES and PARAMETERS ------------------ C
-C ------------------------------------------------ C
-
       character path*34,infile*40,outfile*40
-      integer x,y,t
+      integer x,y,t,i,j
       ! file specifics
       integer nx,ny,ndim,nt
       ! dataset variables
-      real, allocatable :: yvar(:), xvar(:),tvar(:)  ! dimension variables
+      real, allocatable :: yvar(:), xvar(:), tvar(:)  ! dimension variables
       real, allocatable :: cvar(:,:,:,:,:,:)  ! data from spec001_mr
       ! netcdf 'communication' variables
       integer cvar_id,x_id,y_id,t_id         ! variable IDs
@@ -24,7 +17,7 @@ C ------------------------------------------------ C
       character*(nf_max_name) recname
 
       integer lat,lon,imx,sizet,sizes
-      integer nageclass, pointspec, height, nnt, nns, j, t
+      integer nageclass, pointspec, height, nnt, nns
       parameter(nageclass=1,pointspec=31,height=1)
       real dt
       character*60 :: file_name, file_id_c
@@ -106,15 +99,14 @@ C ==== Read existing netCDF file ================== C
       do file_id=1,size(cvar, DIM=2) ! pointspec 31
         ! transform the integer to character
         write(file_id_c, *) file_id
-        OPEN(100, FILE='srs_1.dat', STATUS="REPLACE", ACTION="WRITE")
         ! Construct the filename:
         file_name = 'srs_' // trim(adjustl(file_id_c)) // '.dat'
         open(file_id,file=file_name,status='create',form='formatted',action="write")
-        do n3=1,size(cvar, DIM=3)       ! time 72
-          do n4=1,size(cvar, DIM=4)     ! height 1
-            do n5=1,size(cvar, DIM=5)   ! lon 400
-              do n6=1,size(cvar, DIM=6) ! lat 322
-                write(100,12) cvar(1,file_id,n3,n4,n5,n6)
+        do n3=1,size(cvar, DIM=3)       ! time
+          do n4=1,size(cvar, DIM=4)     ! height
+            do n5=1,lat   ! lon
+              do n6=1,lon ! lat
+                write(file_id,12) cvar(1,file_id,n3,n4,n5,n6)
                 12 format(F10.6)
               end do
             end do
@@ -131,10 +123,6 @@ C ==== Read existing netCDF file ================== C
               if (state.ne.nf_noerr) call handle_err(state)
               print*, '  > File closed: ', path//outfile
       end
-
-C ================================================== C
-C ////////////////////////////////////////////////// C
-C ================================================== C
 
       subroutine handle_err(errcode)
       implicit none
