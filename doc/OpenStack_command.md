@@ -147,6 +147,15 @@ openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack se
 
 - Change fixed ip address
 
+1. Find your port ID and instance data in these commands:
+```
+openstack server list
+openstack port list | grep YOUR_OLD_INSTANCE_IP
+openstack network list
+```
+2. Stop server
+3. Delete IP assigned to your port of instance and make this instance without IP: `openstack port delete 4719c03a-c92c-4958-9521-456b70f6869f`
+4. Generate a new random IP 
 ```
 # remove existing IP
 openstack server remove fixed ip flexpart_m1_medium_202205181240 10.0.1.107
