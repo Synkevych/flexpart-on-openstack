@@ -145,7 +145,16 @@ openstack server list -c Name -f value | grep roman_vm_ | xargs -n1 openstack se
 
 `openstack image create --container-format bare --disk-format qcow2 --file snapshot-name.raw myInstanceSnapshot`
 
-- Change fixed ip address
+### Handling error
+
+#### Show hypervisor hostname, it's state and status
+
+```bashсистеми
+nova hypervisor-list
+# useful if you can't connect to your instance
+```
+
+#### Change fixed IP address
 
 1. Find your port ID and instance data in these commands:
 ```
@@ -158,19 +167,21 @@ openstack network list
 4. Generate a new random IP 
 ```
 # remove existing IP
-openstack server remove fixed ip flexpart_m1_medium_202205181240 10.0.1.107
+openstack server remove fixed ip <server> <ip-address>
 
 # generate a new random IP
-openstack server add fixed ip  b4e19b8d-eca7-42eb-b686-2ac3e278a4dc wrf-private
+openstack server add fixed ip <server> <ip-address>
 ```
 
-### Handling error
+#### Delete port
 
-- Show hypervisor hostname, it's state and status
+`openstack port delete <ID>`
 
-```bashсистеми
-nova hypervisor-list
-# useful if you can't connect to your instance
+#### Generate a new port
+
+```
+openstack port create --network private --fixed-ip \
+subnet=private_subnet,ip-address=10.10.1.20 server1-port0
 ```
 
 ### Copy file from main server to vm
