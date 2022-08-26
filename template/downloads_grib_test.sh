@@ -8,13 +8,14 @@ TO_YEAR=$(date -d "$2" '+%Y'); TO_MONTH=$(date -d "$2" '+%m'); TO_DAY=$(date -d 
 FROM_to_sec=$(date --date="$1" +%s); TO_to_sec=$(date --date="$2" +%s)
 AMOUNT_OF_DAYS=$(( (TO_to_sec - FROM_to_sec)/86400))
 
-HOURS=(0000 0600 1200 1800 0000)
-URL="https://www.ncei.noaa.gov/data/global-forecast-system/access/grid-003-1.0-degree/"
-PREFIX="gfs_3_"
+HOUR=(0000 0600 1200 1800 0000)
+SUFIX=(003 006)
+URL="https://www.ncei.noaa.gov/data/global-forecast-system/access/historical/"
 
-# if YYMM <= 7 month from current date use first forecast else analysis
+# if YYMM <= 7 month from current date use first link else historical
 now=$(date); active_date=$(date --date="$now -7 month" +%s); date_from=$(date --date="$1" +%s)
 
+PREFIX="gfsanl_3_"
 if [ $date_from -ge $active_date ]; then
         DOMAIN="${URL}forecast/"
 else
@@ -23,6 +24,7 @@ fi
 
 # if folder does not exist create them
 [ -d grib_data ] || mkdir grib_data
+DATA_DIR=$(pwd)/grib_data
 
 for i in `seq 0 $AMOUNT_OF_DAYS`; do
 	# if day less than 10 add 0 before
@@ -33,32 +35,48 @@ for i in `seq 0 $AMOUNT_OF_DAYS`; do
                 FILE=${PREFIX}${YYMMDD}"_0000_000.grb2"
                 URL="${DOMAIN}${FROM_YY}${FROM_MM}/${YYMMDD}"
 
-                wget -c "${URL}/${FILE}" -P "grib_data"
-                echo "${URL}/${FILE}" >> grib_data/file_for_downloads.txt
-                echo "${YYMMDD} 000000      ${FILE}     ON DISC" >> AVAILABLE
+                if [[ -f "$DATA_DIR/${FILE}" ]]; then
+                        echo "${FILE} exist"
+                else
+                        wget_output=$(wget -c "${URL}/${FILE}" -P "grib_data")
+                        if [ $? -ne 0 ]; then
+                                echo "Error loading ${FILE} from ${URL}"  >> grib_data/downloads.log
+                        else
+                                echo "${URL}/${FILE}" >> grib_data/files_for_download.txt
+                                echo "${YYMMDD} 000000      ${FILE}     ON DISC" >> AVAILABLE
+                        fi
+                fi
         fi
         # set the date for the next day
         date=$(date --date="$1 + $i day");
         FROM_YY=$(date -d "$date" '+%Y'); FROM_MM=$(date -d "$date" '+%m'); FROM_DD=$(date -d "$date" '+%d')
         YYMMDD="${FROM_YY}${FROM_MM}${FROM_DD}"
-        # download 4 forecasts for every day
 
-        for j in `seq 0 3`; do
+        # download 4 forecasts for every day
+        for j in `seq 0 7`; do
                 # if hour 1800 increment day
 		PR_DD=${FROM_DD}
 		if [ "$j" -eq 3 ]; then
-                        PR_date=$(date -d "$date + 1 day")
-                        PR_DD=$(date -d "$PR_date" '+%d')
+                        PR_DATE=$(date -d "$date + 1 day")
+                        PR_DD=$(date -d "$PR_DATE" '+%d')
 		fi
 
-                HH="${HOURS[j]}"
+                HH="${HOUR[j]}"
 		iterator=$((j+1))
-		PR_HH="${HOURS[iterator]}"
-                FILE=${PREFIX}${YYMMDD}"_"${HH}"_006.grb2"
+		PR_HH="${HOUR[iterator]}"
+                FILE=${PREFIX}${YYMMDD}"_"${HH}"_003.grb2"
                 URL="${DOMAIN}${FROM_YY}${FROM_MM}/${YYMMDD}"
 
-                wget -c "${URL}/${FILE}" -P "grib_data"
-                echo "${URL}/${FILE}" >> grib_data/file_for_downloads.txt
-                echo "${FROM_YY}${FROM_MM}${PR_DD} ${PR_HH}00      ${FILE}     ON DISC" >> AVAILABLE
+                if [[ -f "$DATA_DIR/${FILE}" ]]; then
+                        echo "${FILE} exist"
+                else
+                        wget_output=$(wget -c "${URL}/${FILE}" -P "grib_data")
+                        if [ $? -ne 0 ]; then
+                                echo "Error loading ${FILE} from ${URL}"  >> grib_data/downloads.log
+                        else
+                                echo "${URL}/${FILE}" >> grib_data/downloads.log
+                                echo "${FROM_YY}${FROM_MM}${PR_DD} ${PR_HH}00      ${FILE}     ON DISC" >> AVAILABLE
+                        fi
+                fi
         done
 done
