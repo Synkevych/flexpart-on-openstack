@@ -8,7 +8,7 @@ TO_YEAR=$(date -d "$2" '+%Y'); TO_MONTH=$(date -d "$2" '+%m'); TO_DAY=$(date -d 
 FROM_to_sec=$(date --date="$1" +%s); TO_to_sec=$(date --date="$2" +%s)
 AMOUNT_OF_DAYS=$(( (TO_to_sec - FROM_to_sec)/86400))
 
-HOUR=(0000 0600 1200 1800 0000)
+HOUR=(0600 0600 1200 1200 1800 1800)
 SUFIX=(003 006)
 URL="https://www.ncei.noaa.gov/data/global-forecast-system/access/historical/"
 
@@ -28,43 +28,17 @@ DATA_DIR=$(pwd)/grib_data
 
 for i in `seq 0 $AMOUNT_OF_DAYS`; do
 	# if day less than 10 add 0 before
-	YYMMDD="${FROM_YY}${FROM_MM}${FROM_DD}"
+	YYMMDD="$(FROM_YY FROM_MM FROM_DD)"
 
-        # at first step download 0000_000 forecast
-        if [ "$i" -eq 0 ]; then
-                FILE=${PREFIX}${YYMMDD}"_0000_000.grb2"
-                URL="${DOMAIN}${FROM_YY}${FROM_MM}/${YYMMDD}"
-
-                if [[ -f "$DATA_DIR/${FILE}" ]]; then
-                        echo "${FILE} exist"
-                else
-                        wget_output=$(wget -c "${URL}/${FILE}" -P "grib_data")
-                        if [ $? -ne 0 ]; then
-                                echo "Error loading ${FILE} from ${URL}"  >> grib_data/downloads.log
-                        else
-                                echo "${URL}/${FILE}" >> grib_data/files_for_download.txt
-                                echo "${YYMMDD} 000000      ${FILE}     ON DISC" >> AVAILABLE
-                        fi
-                fi
-        fi
         # set the date for the next day
         date=$(date --date="$1 + $i day");
         FROM_YY=$(date -d "$date" '+%Y'); FROM_MM=$(date -d "$date" '+%m'); FROM_DD=$(date -d "$date" '+%d')
-        YYMMDD="${FROM_YY}${FROM_MM}${FROM_DD}"
 
         # download 4 forecasts for every day
         for j in `seq 0 7`; do
-                # if hour 1800 increment day
-		PR_DD=${FROM_DD}
-		if [ "$j" -eq 3 ]; then
-                        PR_DATE=$(date -d "$date + 1 day")
-                        PR_DD=$(date -d "$PR_DATE" '+%d')
-		fi
-
                 HH="${HOUR[j]}"
-		iterator=$((j+1))
-		PR_HH="${HOUR[iterator]}"
-                FILE=${PREFIX}${YYMMDD}"_"${HH}"_003.grb2"
+		PR_HH="${HOUR[j]}""
+                FILE=${PREFIX}${YYMMDD}"_"${HH}"_"${SUFIX[j%2]}".grb2"
                 URL="${DOMAIN}${FROM_YY}${FROM_MM}/${YYMMDD}"
 
                 if [[ -f "$DATA_DIR/${FILE}" ]]; then
@@ -75,7 +49,7 @@ for i in `seq 0 $AMOUNT_OF_DAYS`; do
                                 echo "Error loading ${FILE} from ${URL}"  >> grib_data/downloads.log
                         else
                                 echo "${URL}/${FILE}" >> grib_data/downloads.log
-                                echo "${FROM_YY}${FROM_MM}${PR_DD} ${PR_HH}00      ${FILE}     ON DISC" >> AVAILABLE
+                                echo "$(FROM_YY FROM_MM FROM_DD PR_HH)00      ${FILE}     ON DISC" >> AVAILABLE
                         fi
                 fi
         done
