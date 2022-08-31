@@ -12,7 +12,7 @@ export FC=gfortran
 # jasper
 
 # here you can change the default install location
-mkdir -p flexpart; cd flexpart;
+mkdir -p flexpart_lib; cd flexpart_lib;
 export DIR=$(pwd)
 
 echo "start installing flexpart" >> installation.log
