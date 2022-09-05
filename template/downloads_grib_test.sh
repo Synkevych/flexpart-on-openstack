@@ -24,10 +24,8 @@ else
 fi
 
 # if folder does not exist create them
-[ -d grib_data ] || mkdir grib_data
+[ -d grib_data ] || mkdir grib_data && echo "YYYYMMDD HHMMSS   name of the file(up to 80 characters)" > AVAILABLE
 DATA_DIR=$(pwd)/grib_data
-
-echo "YYYYMMDD HHMMSS   name of the file(up to 80 characters)" >> AVAILABLE
 
 for i in `seq 0 $AMOUNT_OF_DAYS`; do
 	# if day less than 10 add 0 before
