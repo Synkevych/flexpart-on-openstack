@@ -3,14 +3,12 @@
 set -e
 
 HASH=`date --utc +%Y%m%d%H%M`; FLAVOR="m1.large"; VMNAME="flexpart_${FLAVOR/./_}_${HASH}"
-TIME=$(date "+%d.%m.%Y-%H:%M:%S"); TIMER=20; w=.ssh/"${VMNAME}.key"
+TIME=$(date "+%d.%m.%Y-%H:%M:%S"); TIMER=20; KEY_PATH=.ssh/"${VMNAME}.key"
 
 # test is there resources for a new instance
 source test_quotas.sh $FLAVOR
 
 . ENV # source OpenStack environment variable values
-
-KEY_PATH=.ssh/"${VMNAME}.key"
 openstack keypair create $VMNAME >> $KEY_PATH; chmod 600 .ssh/"${VMNAME}.key"
 
 TIMER=60
