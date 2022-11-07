@@ -1,0 +1,4 @@
+id_calc	use_no	id_measu	id_station	station	country	s_lat	s_lng	id_nuclide	name_nuclide	date_start	time_start	date_end	time_end	val	sigma_or_ldl	backgr
+1	1	1	1	node_123_456	Ukraine	50.85	30.05	3	Ru-106	2020-04-19	07:00:00	2020-04-19	07:00:10	0.0	1.0E-6	6.0E-6
+1	1	2	1	node_123_456	Ukraine	50.85	30.05	3	Ru-106	2020-04-19	08:00:00	2020-04-19	08:00:10	0.0	1.0E-6	6.0E-6
+1	1	3	1	node_123_456	Ukraine	50.85	30.05	3	Ru-106	2020-04-19	09:00:00	2020-04-19	09:00:10	0.0	1.0E-6	6.0E-6

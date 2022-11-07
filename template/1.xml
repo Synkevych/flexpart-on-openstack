@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<journal>
+  <id_calc>1</id_calc>
+  <id_series>1</id_series>
+  <previous_calc>0</previous_calc>
+  <se_lat>37.85</se_lat>
+  <se_lon>0.05</se_lon>
+  <nx>400.0</nx>
+  <ny>322.0</ny>
+  <dlat>0.1</dlat>
+  <dlon>0.1</dlon>
+  <imin>2020-04-18 00:00:00</imin>
+  <imax>2020-04-21 00:00:00</imax>
+  <minheight>0</minheight>
+  <maxheight>34</maxheight>
+  <calc_type>1</calc_type>
+</journal>
