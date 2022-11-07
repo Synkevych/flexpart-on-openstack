@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# launch 100 virtual machines
+# this is for test purpose only
+# for testing script of launching and removing instances
+# launch 100 virtual machines ( 2 instances 50 times)
 
 for i in `seq 1 50`; do
   echo "$i start launching 2 instances" >> vm_launching.log
@@ -8,7 +10,7 @@ for i in `seq 1 50`; do
     ./launch_instance.sh
   done
 
-  # wait a minute after starting, the approximate running time of the calculation model
+  # Wait a minute to allocate resources, start and configure the machine
   sleep 60
 
   # remove instances
