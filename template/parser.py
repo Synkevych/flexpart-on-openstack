@@ -64,6 +64,7 @@ with open(os.path.basename(basename) + '.txt', newline='') as csvfile:
   csv_reader = csv.reader(csvfile, delimiter='\t')
   csv_header = next(csv_reader)
   for row in csv_reader:
+      # name of params in row and it's order:
       # calc_id(0), use(1), m_id(2), s_id(3), station(4), country(5), s_lat(6),s_lng(7),
       # id_nuclide(8), name_nuclide(9), date_start(10), time_start(11), date_end(12), time_end(13), val(14), sigma
       measurement_id = row[2]
@@ -270,9 +271,11 @@ def parse_releases_file(releases_params):
 
 user_params = get_xml_params()
 
-# First date from user last is the last release date
+# First date from user last is the last release date + 1 hour
 # It also creates AVAILABLE file and fill it
+logging.info('Started loading grib data.')
 download_grib(user_params['start_date_time'], releases_params[-1]['end_date_time'])
+logging.info('Finished loading grib data and filling AVAILABLE file.\n')
 
 parse_command_file()
 parse_outgrid_file()
@@ -296,4 +299,4 @@ for param in releases_params:
   output_file_id = output_file_id + 1
   logging.info('FLEXPART completed calculation.\n')
 
-# nohup /path/to/test.py &
+# nohup /data/calculations/33_14/parse_input.py &

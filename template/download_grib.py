@@ -81,7 +81,7 @@ def download_grib(date_start=None, date_end=None):
         end_forecast_date = start_forecast_date = end_forecast_date + timedelta(hours=3)
         continue
       else:
-        URL = DOMAIN + end_forecast_date.strftime('%Y%m/%Y%m%d/') + file_name
+        URL = DOMAIN + start_forecast_date.strftime('%Y%m/%Y%m%d/') + file_name
         urllib.request.urlretrieve(URL, path_to_file)
         parse_available_file(end_forecast_date, file_name)
       end_forecast_date = start_forecast_date = end_forecast_date + \
