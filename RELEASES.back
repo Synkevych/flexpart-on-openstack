@@ -1,0 +1,30 @@
+***************************************************************************************************************
+*                                                                                                             *
+*                                                                                                             *
+*                                                                                                             *
+*   Input file for the Lagrangian particle dispersion model FLEXPART                                          *
+*                        Please select your options                                                           *
+*                                                                                                             *
+*                                                                                                             *
+*                                                                                                             *
+***************************************************************************************************************
+&RELEASES_CTRL
+ NSPEC      =           1, ! Total number of species
+ SPECNUM_REL=          16, ! Species numbers in directory SPECIES
+ /
+&RELEASE
+IDATE1  =       start_date,
+ITIME1  =       start_time,
+IDATE2  =       end_date,
+ITIME2  =       end_time,
+LON1    =        lon_1,
+LON2    =        30.10,
+LAT1    =        lat_1,
+LAT2    =        50.90,
+Z1      =          0.00,
+Z2      =          200.00,
+ZKIND   =              1,
+MASS    =       1.00e-04,
+PARTS   =            10000,
+COMMENT =    release_comment,
+/
